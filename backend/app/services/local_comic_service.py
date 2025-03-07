@@ -18,8 +18,7 @@ class LocalComicService:
     """本地漫画服务"""
     
     def __init__(self):
-        self.mock_data_path = Path("./mock_data")
-        self.mock_data_path.mkdir(parents=True, exist_ok=True)
+        print('LocalComicService init')
     
     async def download_comic(self, comic_id: str) -> Optional[Comic]:
         """下载漫画"""

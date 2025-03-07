@@ -1,85 +1,58 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+import subprocess
 import os
-import logging
 from pathlib import Path
 
-from app.routes import comics, search, chapters
-from app.config.settings import get_settings
-from app.middleware import rate_limit_middleware, cache_middleware, security_middleware
-
-# 获取配置
-settings = get_settings()
-
-# 配置日志
-logging.basicConfig(
-    level=getattr(logging, settings.log_level.upper()),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-logger = logging.getLogger(__name__)
-
-# 创建FastAPI应用
-app = FastAPI(
-    title="漫画阅读API",
-    description="漫画阅读网站的后端API",
-    version="0.1.0",
-)
+app = FastAPI(title="简化版漫画下载API")
 
 # 配置CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=["*"],  # 允许所有来源
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 添加自定义中间件
-app.middleware("http")(security_middleware)  # 安全中间件应该最先执行
-app.middleware("http")(rate_limit_middleware)
-app.middleware("http")(cache_middleware)
+# 挂载静态文件目录
+static_dir = Path("../src/assets/mock")
+static_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
-# 注册路由
-app.include_router(comics.router, prefix="/api")
-app.include_router(search.router, prefix="/api")
-app.include_router(chapters.router, prefix="/api")
+# 下载脚本路径
+download_script = Path(__file__).parent / "download_and_process.py"
 
-# 确保mock_data目录存在
-mock_data_path = Path("./mock_data")
-mock_data_path.mkdir(parents=True, exist_ok=True)
+def download_comic_task(comic_id: str):
+    """后台任务：下载漫画"""
+    try:
+        # 执行下载脚本
+        subprocess.run(["python3", str(download_script), comic_id], check=True)
+    except Exception as e:
+        print(f"下载漫画 {comic_id} 时出错: {e}")
 
-# 挂载静态文件目录（用于提供漫画图片）
-app.mount("/api/static", StaticFiles(directory=str(mock_data_path)), name="static")
+@app.get("/")
+def read_root():
+    return {"message": "简化版漫画下载API"}
 
-@app.get("/api/health")
-async def health_check():
-    return {"status": "ok"}
+@app.get("/download/{comic_id}")
+async def download_comic(comic_id: str, background_tasks: BackgroundTasks):
+    """下载漫画API"""
+    # 验证漫画ID是否为6位数字
+    if not comic_id.isdigit() or len(comic_id) != 6:
+        raise HTTPException(status_code=400, detail="漫画ID必须是6位数字")
+    
+    # 检查下载脚本是否存在
+    if not download_script.exists():
+        raise HTTPException(status_code=500, detail="下载脚本不存在")
+    
+    # 将下载任务添加到后台任务
+    background_tasks.add_task(download_comic_task, comic_id)
+    
+    return {"message": f"已开始下载漫画 {comic_id}，请稍后刷新页面查看"}
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
-    logger.error(f"Unhandled exception: {exc}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={"message": "服务器内部错误", "success": False},
-    )
-
-# 启动事件
-@app.on_event("startup")
-async def startup_event():
-    logger.info("应用启动完成")
-
-# 关闭事件
-@app.on_event("shutdown")
-async def shutdown_event():
-    logger.info("应用已关闭")
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "app.main:app",
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,
-    ) 
+@app.get("/health")
+def health_check():
+    """健康检查"""
+    return {"status": "ok"} 

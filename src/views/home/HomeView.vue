@@ -1,5 +1,33 @@
 <template>
   <div class="home-view">
+    <!-- 下载漫画 -->
+    <div class="download-section">
+      <el-card class="download-card">
+        <div class="download-header">
+          <h2>下载漫画</h2>
+        </div>
+        <div class="download-form">
+          <el-input
+            v-model="comicId"
+            placeholder="请输入6位漫画ID"
+            maxlength="6"
+            show-word-limit
+            clearable
+          />
+          <el-button 
+            type="primary" 
+            :loading="downloading" 
+            @click="downloadComic"
+          >
+            下载
+          </el-button>
+        </div>
+        <div v-if="downloadMessage" class="download-message">
+          {{ downloadMessage }}
+        </div>
+      </el-card>
+    </div>
+
     <!-- 轮播图 -->
     <div class="banner-section">
       <el-carousel height="300px" :interval="5000" arrow="always" indicator-position="outside">
@@ -80,6 +108,8 @@ import { useComicStore } from '@/stores/comic'
 import SectionTitle from '@/components/SectionTitle.vue'
 import ComicCard from '@/components/ComicCard.vue'
 import ComicGrid from '@/components/ComicGrid.vue'
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const comicStore = useComicStore()
@@ -92,6 +122,46 @@ const loading = computed(() => comicStore.loading)
 const comics = computed(() => comicStore.comics)
 const recommendedComics = computed(() => comicStore.recommendedComics)
 const latestComics = computed(() => comicStore.latestComics)
+
+// 下载漫画相关
+const comicId = ref('')
+const downloading = ref(false)
+const downloadMessage = ref('')
+
+// 下载漫画
+const downloadComic = async () => {
+  if (!comicId.value) {
+    ElMessage.warning('请输入漫画ID')
+    return
+  }
+  
+  if (!/^\d{6}$/.test(comicId.value)) {
+    ElMessage.warning('漫画ID必须是6位数字')
+    return
+  }
+  
+  downloading.value = true
+  downloadMessage.value = '正在下载，请稍候...'
+  
+  try {
+    const response = await axios.get(`http://localhost:3000/download/${comicId.value}`)
+    downloadMessage.value = response.data.message
+    ElMessage.success(response.data.message)
+    
+    // 下载完成后刷新漫画列表
+    setTimeout(async () => {
+      await comicStore.fetchComics(currentPage.value, pageSize.value)
+      await comicStore.fetchRecommendedComics(6)
+      await comicStore.fetchLatestComics(6)
+    }, 3000)
+  } catch (error: any) {
+    console.error('下载漫画失败', error)
+    downloadMessage.value = `下载失败: ${error.response?.data?.detail || error.message}`
+    ElMessage.error(downloadMessage.value)
+  } finally {
+    downloading.value = false
+  }
+}
 
 // 轮播图数据
 const bannerItems = ref([
@@ -154,6 +224,38 @@ const navigateToComic = (id: number | string) => {
 <style scoped lang="scss">
 .home-view {
   padding-bottom: 40px;
+}
+
+.download-section {
+  margin-bottom: 30px;
+  
+  .download-card {
+    border-radius: 8px;
+    
+    .download-header {
+      margin-bottom: 16px;
+      
+      h2 {
+        margin: 0;
+        font-size: 20px;
+        color: #333;
+      }
+    }
+    
+    .download-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .download-message {
+      margin-top: 10px;
+      padding: 8px;
+      background-color: #f5f7fa;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+  }
 }
 
 .banner-section {
