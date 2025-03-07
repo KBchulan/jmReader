@@ -1,5 +1,13 @@
 import type { Comic, Chapter, Page, PaginatedResult, SearchParams } from '@/types'
 
+// 小魔仙图片路径数组 - 修改为使用相对路径
+const mockImagePaths = Array.from({ length: 16 }, (_, i) => {
+  const index = i + 1
+  const paddedNum = index.toString().padStart(5, '0')
+  // 使用相对路径，确保Vite可以正确处理
+  return `/src/assets/mock/小魔仙/${paddedNum}.png`
+})
+
 // 生成随机漫画数据
 function generateMockComics(count = 50): Comic[] {
   const comics: Comic[] = []
@@ -26,17 +34,31 @@ function generateMockComics(count = 50): Comic[] {
     )
     const updateTime = randomDate.toISOString().split('T')[0]
 
-    // 生成漫画数据
-    comics.push({
-      id: i,
-      title: `测试漫画 ${i}`,
-      cover: `https://picsum.photos/id/${(i % 30) + 100}/300/400`,
-      author: `作者 ${Math.floor(i / 5) + 1}`,
-      description: `这是测试漫画 ${i} 的描述。这部漫画讲述了一个精彩的故事，包含了${selectedTags.join('、')}等元素。`,
-      tags: selectedTags,
-      updateTime,
-      status: statuses[Math.floor(Math.random() * statuses.length)]
-    })
+    // 为测试漫画1设置特殊值
+    if (i === 1) {
+      comics.push({
+        id: i,
+        title: '小魔仙',
+        cover: mockImagePaths[0],
+        author: '小魔仙作者',
+        description: '这是小魔仙漫画的描述。讲述了一个充满魔法与冒险的故事，包含了魔法、冒险、奇幻等元素。',
+        tags: ['魔法', '冒险', '奇幻'],
+        updateTime,
+        status: 'ongoing'
+      })
+    } else {
+      // 生成其他漫画数据
+      comics.push({
+        id: i,
+        title: `测试漫画 ${i}`,
+        cover: `https://picsum.photos/id/${(i % 30) + 100}/300/400`,
+        author: `作者 ${Math.floor(i / 5) + 1}`,
+        description: `这是测试漫画 ${i} 的描述。这部漫画讲述了一个精彩的故事，包含了${selectedTags.join('、')}等元素。`,
+        tags: selectedTags,
+        updateTime,
+        status: statuses[Math.floor(Math.random() * statuses.length)]
+      })
+    }
   }
 
   return comics
@@ -46,6 +68,20 @@ function generateMockComics(count = 50): Comic[] {
 function generateMockChapters(comicId: number | string, count = 20): Chapter[] {
   const chapters: Chapter[] = []
   
+  // 为小魔仙漫画创建特殊章节
+  if (comicId === 1) {
+    chapters.push({
+      id: `${comicId}-1`,
+      comicId,
+      title: '第1话：神秘的开始',
+      order: 1,
+      updateTime: '2023-03-01',
+      pageCount: mockImagePaths.length
+    })
+    return chapters
+  }
+  
+  // 生成其他漫画的章节
   for (let i = 1; i <= count; i++) {
     // 生成更新日期（模拟章节发布时间，越新的章节日期越近）
     const daysPast = (count - i) * 7 // 每周更新一次
@@ -70,6 +106,20 @@ function generateMockChapters(comicId: number | string, count = 20): Chapter[] {
 function generateMockPages(chapterId: number | string, pageCount: number): Page[] {
   const pages: Page[] = []
   
+  // 如果是小魔仙漫画的章节，使用本地图片
+  if (chapterId === '1-1') {
+    for (let i = 0; i < pageCount; i++) {
+      pages.push({
+        id: `${chapterId}-${i+1}`,
+        chapterId,
+        url: mockImagePaths[i],
+        order: i + 1
+      })
+    }
+    return pages
+  }
+  
+  // 其他漫画使用随机图片
   for (let i = 1; i <= pageCount; i++) {
     pages.push({
       id: `${chapterId}-${i}`,

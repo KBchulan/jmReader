@@ -1,4 +1,4 @@
-@import './variables.scss';
+@use './variables' as vars;
 
 // 重置样式
 * {
@@ -16,12 +16,12 @@ body {
   font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $text-color-primary;
-  font-size: $font-size-base;
+  color: vars.$text-color-primary;
+  font-size: vars.$font-size-base;
   line-height: 1.5;
-  background-color: $bg-color-secondary;
+  background-color: vars.$bg-color-secondary;
   height: 100%;
-  transition: all $transition-duration $transition-ease;
+  transition: all vars.$transition-duration vars.$transition-ease;
 }
 
 #app {
@@ -32,16 +32,16 @@ body {
 
 // 链接样式
 a {
-  color: $primary-color;
+  color: vars.$primary-color;
   text-decoration: none;
-  transition: color $transition-duration $transition-ease;
+  transition: color vars.$transition-duration vars.$transition-ease;
   
   &:hover {
-    color: $primary-color-light;
+    color: vars.$primary-color-light;
   }
   
   &:active {
-    color: $primary-color-dark;
+    color: vars.$primary-color-dark;
   }
 }
 
@@ -86,24 +86,24 @@ button {
 // 响应式容器
 .container {
   width: 100%;
-  padding-right: $spacing-medium;
-  padding-left: $spacing-medium;
+  padding-right: vars.$spacing-medium;
+  padding-left: vars.$spacing-medium;
   margin-right: auto;
   margin-left: auto;
   
-  @media (min-width: $breakpoint-sm) {
+  @media (min-width: vars.$breakpoint-sm) {
     max-width: 720px;
   }
   
-  @media (min-width: $breakpoint-md) {
+  @media (min-width: vars.$breakpoint-md) {
     max-width: 960px;
   }
   
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: vars.$breakpoint-lg) {
     max-width: 1140px;
   }
   
-  @media (min-width: $breakpoint-xl) {
+  @media (min-width: vars.$breakpoint-xl) {
     max-width: 1320px;
   }
 }
@@ -115,29 +115,29 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: $bg-color-secondary;
+  background: vars.$bg-color-secondary;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $border-color-base;
+  background: vars.$border-color-base;
   border-radius: 4px;
   
   &:hover {
-    background: $border-color-light;
+    background: vars.$border-color-light;
   }
 }
 
 // 卡片样式
 .card {
-  background-color: $bg-color;
-  border-radius: $border-radius-medium;
-  box-shadow: $box-shadow-light;
+  background-color: vars.$bg-color;
+  border-radius: vars.$border-radius-medium;
+  box-shadow: vars.$box-shadow-light;
   overflow: hidden;
-  transition: transform $transition-duration, box-shadow $transition-duration;
+  transition: transform vars.$transition-duration, box-shadow vars.$transition-duration;
   
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $box-shadow-base;
+    box-shadow: vars.$box-shadow-base;
   }
 }
 
@@ -145,18 +145,18 @@ button {
 .tag {
   display: inline-block;
   padding: 2px 6px;
-  font-size: $font-size-extra-small;
-  border-radius: $border-radius-small;
+  font-size: vars.$font-size-extra-small;
+  border-radius: vars.$border-radius-small;
   margin-right: 4px;
   margin-bottom: 4px;
-  background-color: $bg-color-secondary;
-  color: $text-color-regular;
+  background-color: vars.$bg-color-secondary;
+  color: vars.$text-color-regular;
 }
 
 // 动画
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity $transition-duration;
+  transition: opacity vars.$transition-duration;
 }
 
 .fade-enter-from,
@@ -166,7 +166,7 @@ button {
 
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: transform $transition-duration, opacity $transition-duration;
+  transition: transform vars.$transition-duration, opacity vars.$transition-duration;
 }
 
 .slide-up-enter-from,

@@ -1,4 +1,4 @@
-@import './variables.scss';
+@use './variables' as vars;
 
 /* 进度条样式 */
 #nprogress {
@@ -6,7 +6,7 @@
 }
 
 #nprogress .bar {
-  background: var(--primary-color, $primary-color);
+  background: var(--primary-color, vars.$primary-color);
   position: fixed;
   z-index: 1031;
   top: 0;
@@ -21,7 +21,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px var(--primary-color, $primary-color), 0 0 5px var(--primary-color, $primary-color);
+  box-shadow: 0 0 10px var(--primary-color, vars.$primary-color), 0 0 5px var(--primary-color, vars.$primary-color);
   opacity: 1.0;
   transform: rotate(3deg) translate(0px, -4px);
 }

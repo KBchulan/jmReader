@@ -1,16 +1,16 @@
-@import './variables.scss';
+@use './variables' as vars;
 
 // 亮色主题（默认）
 :root {
-  --bg-color: #{$bg-color};
-  --bg-color-secondary: #{$bg-color-secondary};
-  --text-color-primary: #{$text-color-primary};
-  --text-color-regular: #{$text-color-regular};
-  --text-color-secondary: #{$text-color-secondary};
-  --border-color-base: #{$border-color-base};
-  --border-color-light: #{$border-color-light};
-  --card-bg-color: #{$bg-color};
-  --header-bg-color: #{$bg-color};
+  --bg-color: #{vars.$bg-color};
+  --bg-color-secondary: #{vars.$bg-color-secondary};
+  --text-color-primary: #{vars.$text-color-primary};
+  --text-color-regular: #{vars.$text-color-regular};
+  --text-color-secondary: #{vars.$text-color-secondary};
+  --border-color-base: #{vars.$border-color-base};
+  --border-color-light: #{vars.$border-color-light};
+  --card-bg-color: #{vars.$bg-color};
+  --header-bg-color: #{vars.$bg-color};
 }
 
 // 暗色主题
@@ -61,9 +61,9 @@
 
 // 粉色主题
 .pink-theme {
-  --primary-color: #{$primary-color};
-  --primary-color-light: #{$primary-color-light};
-  --primary-color-dark: #{$primary-color-dark};
+  --primary-color: #{vars.$primary-color};
+  --primary-color-light: #{vars.$primary-color-light};
+  --primary-color-dark: #{vars.$primary-color-dark};
 }
 
 // 蓝色主题
