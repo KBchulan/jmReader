@@ -65,7 +65,7 @@ export async function searchComics(params: SearchParams): Promise<PaginatedResul
     }
     return mockApi.searchComics(params)
   } catch (error) {
-    console.warn('搜索漫画失败，使用mock数据', error)
+    console.warn('搜索漫画失败,使用mock数据', error)
     return mockApi.searchComics(params)
   }
 }
