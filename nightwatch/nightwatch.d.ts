@@ -1,3 +1,4 @@
+
 import { NightwatchCustomAssertions, NightwatchCustomCommands } from 'nightwatch'
 
 declare module 'nightwatch' {

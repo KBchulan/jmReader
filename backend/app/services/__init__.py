@@ -1,3 +1,6 @@
-from app.services.comic_service import comic_service
+from app.services.local_comic_service import LocalComicService
 
-__all__ = ["comic_service"] 
+# 创建服务实例
+local_comic_service = LocalComicService()
+
+__all__ = ["local_comic_service"] 

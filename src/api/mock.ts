@@ -1,4 +1,5 @@
 import type { Comic, Chapter, Page, PaginatedResult, SearchParams } from '@/types'
+import { ref } from 'vue'
 
 // 小魔仙图片路径数组 - 修改为使用相对路径
 const mockImagePaths = Array.from({ length: 16 }, (_, i) => {
@@ -8,127 +9,118 @@ const mockImagePaths = Array.from({ length: 16 }, (_, i) => {
   return `/src/assets/mock/小魔仙/${paddedNum}.png`
 })
 
-// 生成随机漫画数据
-function generateMockComics(count = 50): Comic[] {
-  const comics: Comic[] = []
-  const statuses: ('ongoing' | 'completed')[] = ['ongoing', 'completed']
-  const tags = ['热血', '冒险', '搞笑', '恋爱', '科幻', '奇幻', '魔法', '校园', '悬疑', '推理', '恐怖', '战斗']
+// 尝试加载comics.json文件
+let comicsFromJson: Comic[] = []
+try {
+  // 使用动态导入加载JSON文件
+  const comicsJsonModule = import.meta.glob('/src/assets/mock/comics.json', { eager: true })
+  const comicsJsonPath = Object.keys(comicsJsonModule)[0]
+  if (comicsJsonPath) {
+    const jsonData = (comicsJsonModule[comicsJsonPath] as any).default || []
+    // 确保status字段的值是'completed'或'ongoing'
+    comicsFromJson = jsonData.map((comic: any) => ({
+      ...comic,
+      status: comic.status === 'completed' ? 'completed' : 'ongoing'
+    })) as Comic[]
+  }
+} catch (error) {
+  console.warn('无法加载comics.json文件', error)
+}
 
-  for (let i = 1; i <= count; i++) {
-    const randomTagCount = Math.floor(Math.random() * 4) + 1
-    const selectedTags: string[] = []
-    
-    // 随机选择标签
-    for (let j = 0; j < randomTagCount; j++) {
-      const randomTag = tags[Math.floor(Math.random() * tags.length)]
-      if (!selectedTags.includes(randomTag)) {
-        selectedTags.push(randomTag)
+// 尝试加载chapters.json文件
+let chaptersFromJson: Chapter[] = []
+try {
+  // 使用动态导入加载JSON文件
+  const chaptersJsonModule = import.meta.glob('/src/assets/mock/chapters.json', { eager: true })
+  const chaptersJsonPath = Object.keys(chaptersJsonModule)[0]
+  if (chaptersJsonPath) {
+    chaptersFromJson = (chaptersJsonModule[chaptersJsonPath] as any).default || []
+  }
+} catch (error) {
+  console.warn('无法加载chapters.json文件', error)
+}
+
+// 生成小魔仙漫画数据
+function generateMockComics(): Comic[] {
+  const defaultComics: Comic[] = [
+    {
+      id: "1",
+      title: '小魔仙',
+      cover: mockImagePaths[0],
+      author: '小魔仙作者',
+      description: '这是小魔仙漫画的描述。讲述了一个充满魔法与冒险的故事，包含了魔法、冒险、奇幻等元素。',
+      tags: ['魔法', '冒险', '奇幻'],
+      updateTime: new Date().toISOString().split('T')[0],
+      status: 'completed'
+    }
+  ]
+  
+  // 合并默认漫画和从JSON加载的漫画
+  return [...defaultComics, ...comicsFromJson]
+}
+
+// 生成小魔仙章节数据
+function generateMockChapters(comicId: number | string): Chapter[] {
+  // 如果是小魔仙，返回默认章节
+  if (comicId.toString() === '1') {
+    return [
+      {
+        id: `${comicId}-1`,
+        comicId,
+        title: '第1话：神秘的开始',
+        order: 1,
+        updateTime: new Date().toISOString().split('T')[0],
+        pageCount: mockImagePaths.length
       }
-    }
-
-    // 随机生成更新日期（过去3个月内）
-    const now = new Date()
-    const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
-    const randomDate = new Date(
-      threeMonthsAgo.getTime() + Math.random() * (now.getTime() - threeMonthsAgo.getTime())
-    )
-    const updateTime = randomDate.toISOString().split('T')[0]
-
-    // 为测试漫画1设置特殊值
-    if (i === 1) {
-      comics.push({
-        id: i,
-        title: '小魔仙',
-        cover: mockImagePaths[0],
-        author: '小魔仙作者',
-        description: '这是小魔仙漫画的描述。讲述了一个充满魔法与冒险的故事，包含了魔法、冒险、奇幻等元素。',
-        tags: ['魔法', '冒险', '奇幻'],
-        updateTime,
-        status: 'ongoing'
-      })
-    } else {
-      // 生成其他漫画数据
-      comics.push({
-        id: i,
-        title: `测试漫画 ${i}`,
-        cover: `https://picsum.photos/id/${(i % 30) + 100}/300/400`,
-        author: `作者 ${Math.floor(i / 5) + 1}`,
-        description: `这是测试漫画 ${i} 的描述。这部漫画讲述了一个精彩的故事，包含了${selectedTags.join('、')}等元素。`,
-        tags: selectedTags,
-        updateTime,
-        status: statuses[Math.floor(Math.random() * statuses.length)]
-      })
-    }
-  }
-
-  return comics
-}
-
-// 生成随机章节数据
-function generateMockChapters(comicId: number | string, count = 20): Chapter[] {
-  const chapters: Chapter[] = []
-  
-  // 为小魔仙漫画创建特殊章节
-  if (comicId === 1) {
-    chapters.push({
-      id: `${comicId}-1`,
-      comicId,
-      title: '第1话：神秘的开始',
-      order: 1,
-      updateTime: '2023-03-01',
-      pageCount: mockImagePaths.length
-    })
-    return chapters
+    ]
   }
   
-  // 生成其他漫画的章节
-  for (let i = 1; i <= count; i++) {
-    // 生成更新日期（模拟章节发布时间，越新的章节日期越近）
-    const daysPast = (count - i) * 7 // 每周更新一次
-    const updateDate = new Date()
-    updateDate.setDate(updateDate.getDate() - daysPast)
-    const updateTime = updateDate.toISOString().split('T')[0]
-
-    chapters.push({
-      id: `${comicId}-${i}`,
-      comicId,
-      title: `第${i}话`,
-      order: i,
-      updateTime,
-      pageCount: Math.floor(Math.random() * 20) + 10 // 10-30页
-    })
-  }
-
-  return chapters
+  // 否则从JSON加载的章节中查找
+  const chapters = chaptersFromJson.filter(chapter => 
+    chapter.comicId.toString() === comicId.toString()
+  )
+  
+  return chapters.length > 0 ? chapters : []
 }
 
-// 生成随机页面数据
-function generateMockPages(chapterId: number | string, pageCount: number): Page[] {
+// 生成章节页面数据
+export function getChapterPages(chapterId: number | string): Page[] {
+  // 如果是小魔仙的章节，返回默认页面
+  if (chapterId.toString() === '1-1') {
+    return mockImagePaths.map((path, index) => ({
+      id: `${chapterId}-${index + 1}`,
+      chapterId,
+      order: index + 1,
+      url: path
+    }))
+  }
+  
+  // 否则尝试查找对应的漫画和章节
+  const [comicId, chapterOrder] = chapterId.toString().split('-')
+  if (!comicId || !chapterOrder) return []
+  
+  // 查找漫画
+  const comic = getComicDetail(comicId)
+  if (!comic) return []
+  
+  // 查找章节
+  const chapter = comic.chapters?.find(ch => ch.id === chapterId)
+  if (!chapter) return []
+  
+  // 生成页面数据
+  const pageCount = chapter.pageCount || 0
   const pages: Page[] = []
   
-  // 如果是小魔仙漫画的章节，使用本地图片
-  if (chapterId === '1-1') {
-    for (let i = 0; i < pageCount; i++) {
-      pages.push({
-        id: `${chapterId}-${i+1}`,
-        chapterId,
-        url: mockImagePaths[i],
-        order: i + 1
-      })
-    }
-    return pages
-  }
-  
-  // 其他漫画使用随机图片
   for (let i = 1; i <= pageCount; i++) {
+    const paddedNum = i.toString().padStart(5, '0')
     pages.push({
       id: `${chapterId}-${i}`,
       chapterId,
-      url: `https://picsum.photos/id/${(Math.floor(Math.random() * 100) + 200)}/800/1200`,
-      order: i
+      order: i,
+      url: `/src/assets/mock/${comicId}/${paddedNum}.webp`
     })
   }
-
+  
   return pages
 }
 
@@ -171,74 +163,39 @@ export function getComicDetail(id: number | string): Comic | null {
   return comic || null
 }
 
-// 获取章节页面
-export function getChapterPages(chapterId: number | string): Page[] {
-  // 从chapterId解析出comicId和chapterOrder
-  const [comicId, chapterOrder] = chapterId.toString().split('-').map(Number)
-  
-  // 获取漫画章节信息
-  const comic = getComicDetail(comicId)
-  if (!comic || !comic.chapters) return []
-  
-  const chapter = comic.chapters.find(c => c.order === chapterOrder)
-  if (!chapter) return []
-  
-  return generateMockPages(chapterId, chapter.pageCount)
-}
-
 // 搜索漫画
 export function searchComics(params: SearchParams): PaginatedResult<Comic> {
-  const { keyword, page = 1, pageSize = 20, sort, tags } = params
-  const allComics = getAllComics()
-  
-  // 过滤匹配的漫画
-  let filtered = allComics
+  const { keyword, tags } = params
+  let allComics = getAllComics()
   
   // 关键词过滤
   if (keyword) {
-    // 判断是否是纯数字
-    const isNumeric = /^\d+$/.test(keyword)
-    
-    if (isNumeric) {
-      // 匹配ID
-      filtered = filtered.filter(comic => comic.id.toString() === keyword)
-    } else {
-      // 匹配标题或作者
-      const lowerKeyword = keyword.toLowerCase()
-      filtered = filtered.filter(comic => 
-        comic.title.toLowerCase().includes(lowerKeyword) || 
-        comic.author.toLowerCase().includes(lowerKeyword)
-      )
-    }
+    allComics = allComics.filter(comic => 
+      comic.title.toLowerCase().includes(keyword.toLowerCase()) ||
+      comic.author.toLowerCase().includes(keyword.toLowerCase()) ||
+      comic.description.toLowerCase().includes(keyword.toLowerCase())
+    )
   }
   
   // 标签过滤
   if (tags && tags.length > 0) {
-    filtered = filtered.filter(comic => 
-      tags.some(tag => comic.tags.includes(tag))
+    allComics = allComics.filter(comic => 
+      tags.every(tag => comic.tags.includes(tag))
     )
   }
   
-  // 排序
-  if (sort) {
-    if (sort === 'newest') {
-      filtered.sort((a, b) => new Date(b.updateTime).getTime() - new Date(a.updateTime).getTime())
-    } else if (sort === 'popular') {
-      // 这里用ID的倒序模拟人气排序
-      filtered.sort((a, b) => Number(b.id) - Number(a.id))
-    }
-  }
-  
   // 分页
+  const page = params.page || 1
+  const pageSize = params.pageSize || 20
   const start = (page - 1) * pageSize
   const end = start + pageSize
-  const items = filtered.slice(start, end)
+  const items = allComics.slice(start, end)
   
   return {
     items,
-    total: filtered.length,
+    total: allComics.length,
     page,
     pageSize,
-    hasMore: end < filtered.length
+    hasMore: end < allComics.length
   }
 } 

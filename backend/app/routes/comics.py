@@ -1,38 +1,42 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Path
 from typing import List, Optional
 
-from app.services.comic_service import comic_service
-from app.models.comic import Comic, PaginatedResult
-from app.models.response import ApiResponse
+from app.models.comic import Comic, Chapter, Page, PaginatedResult
+from app.services import local_comic_service
 
 router = APIRouter(tags=["comics"])
 
-@router.get("/comics", response_model=ApiResponse[PaginatedResult])
-async def get_comics(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100)
-):
+@router.get("/comics", response_model=PaginatedResult)
+async def get_comics(page: int = Query(1, ge=1), page_size: int = Query(20, ge=1, le=100)):
     """获取漫画列表"""
-    result = await comic_service.get_comics(page, page_size)
-    return ApiResponse(data=result)
+    result = await local_comic_service.get_comics(page, page_size)
+    return result
 
-@router.get("/comics/{comic_id}", response_model=ApiResponse[Comic])
-async def get_comic_detail(comic_id: str):
+@router.get("/comics/{comic_id}", response_model=Comic)
+async def get_comic_detail(comic_id: str = Path(...)):
     """获取漫画详情"""
-    comic = await comic_service.get_comic_detail(comic_id)
+    comic = await local_comic_service.get_comic_detail(comic_id)
     if not comic:
         raise HTTPException(status_code=404, detail="漫画不存在")
-    return ApiResponse(data=comic)
+    return comic
 
-@router.get("/comics/latest", response_model=ApiResponse[List[Comic]])
+@router.get("/comics/download/{comic_id}", response_model=Comic)
+async def download_comic(comic_id: str = Path(...)):
+    """下载漫画"""
+    comic = await local_comic_service.download_comic(comic_id)
+    if not comic:
+        raise HTTPException(status_code=404, detail="下载漫画失败")
+    return comic
+
+@router.get("/comics/latest", response_model=List[Comic])
 async def get_latest_comics(limit: int = Query(10, ge=1, le=50)):
-    """获取最新更新的漫画"""
-    result = await comic_service.get_comics(1, limit)
-    return ApiResponse(data=result.items)
+    """获取最新漫画"""
+    result = await local_comic_service.get_comics(1, limit)
+    return result.items
 
-@router.get("/comics/recommended", response_model=ApiResponse[List[Comic]])
+@router.get("/comics/recommended", response_model=List[Comic])
 async def get_recommended_comics(limit: int = Query(6, ge=1, le=20)):
     """获取推荐漫画"""
-    # 简单实现，直接返回最新的几部漫画作为推荐
-    result = await comic_service.get_comics(1, limit)
-    return ApiResponse(data=result.items) 
+    # 这里简单地返回最新漫画作为推荐
+    result = await local_comic_service.get_comics(1, limit)
+    return result.items 

@@ -9,7 +9,6 @@ from pathlib import Path
 from app.routes import comics, search, chapters
 from app.config.settings import get_settings
 from app.middleware import rate_limit_middleware, cache_middleware, security_middleware
-from app.db.mongodb import mongodb
 
 # 获取配置
 settings = get_settings()
@@ -47,12 +46,12 @@ app.include_router(comics.router, prefix="/api")
 app.include_router(search.router, prefix="/api")
 app.include_router(chapters.router, prefix="/api")
 
-# 确保下载目录存在
-download_path = Path(settings.download_path)
-download_path.mkdir(parents=True, exist_ok=True)
+# 确保mock_data目录存在
+mock_data_path = Path("./mock_data")
+mock_data_path.mkdir(parents=True, exist_ok=True)
 
 # 挂载静态文件目录（用于提供漫画图片）
-app.mount("/api/static", StaticFiles(directory=settings.download_path), name="static")
+app.mount("/api/static", StaticFiles(directory=str(mock_data_path)), name="static")
 
 @app.get("/api/health")
 async def health_check():
@@ -69,13 +68,11 @@ async def global_exception_handler(request, exc):
 # 启动事件
 @app.on_event("startup")
 async def startup_event():
-    await mongodb.connect_to_mongodb()
     logger.info("应用启动完成")
 
 # 关闭事件
 @app.on_event("shutdown")
 async def shutdown_event():
-    await mongodb.close_mongodb_connection()
     logger.info("应用已关闭")
 
 if __name__ == "__main__":
