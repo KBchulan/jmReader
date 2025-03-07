@@ -1,0 +1,176 @@
+@import './variables.scss';
+
+// 重置样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $text-color-primary;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  background-color: $bg-color-secondary;
+  height: 100%;
+  transition: all $transition-duration $transition-ease;
+}
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// 链接样式
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color $transition-duration $transition-ease;
+  
+  &:hover {
+    color: $primary-color-light;
+  }
+  
+  &:active {
+    color: $primary-color-dark;
+  }
+}
+
+// 图片样式
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+// 按钮重置
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  color: inherit;
+  outline: none;
+}
+
+// 常用工具类
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// 响应式容器
+.container {
+  width: 100%;
+  padding-right: $spacing-medium;
+  padding-left: $spacing-medium;
+  margin-right: auto;
+  margin-left: auto;
+  
+  @media (min-width: $breakpoint-sm) {
+    max-width: 720px;
+  }
+  
+  @media (min-width: $breakpoint-md) {
+    max-width: 960px;
+  }
+  
+  @media (min-width: $breakpoint-lg) {
+    max-width: 1140px;
+  }
+  
+  @media (min-width: $breakpoint-xl) {
+    max-width: 1320px;
+  }
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-color-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $border-color-base;
+  border-radius: 4px;
+  
+  &:hover {
+    background: $border-color-light;
+  }
+}
+
+// 卡片样式
+.card {
+  background-color: $bg-color;
+  border-radius: $border-radius-medium;
+  box-shadow: $box-shadow-light;
+  overflow: hidden;
+  transition: transform $transition-duration, box-shadow $transition-duration;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $box-shadow-base;
+  }
+}
+
+// 标签样式
+.tag {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: $font-size-extra-small;
+  border-radius: $border-radius-small;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  background-color: $bg-color-secondary;
+  color: $text-color-regular;
+}
+
+// 动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity $transition-duration;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform $transition-duration, opacity $transition-duration;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+} 

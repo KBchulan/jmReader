@@ -1,0 +1,88 @@
+@import './variables.scss';
+
+// 亮色主题（默认）
+:root {
+  --bg-color: #{$bg-color};
+  --bg-color-secondary: #{$bg-color-secondary};
+  --text-color-primary: #{$text-color-primary};
+  --text-color-regular: #{$text-color-regular};
+  --text-color-secondary: #{$text-color-secondary};
+  --border-color-base: #{$border-color-base};
+  --border-color-light: #{$border-color-light};
+  --card-bg-color: #{$bg-color};
+  --header-bg-color: #{$bg-color};
+}
+
+// 暗色主题
+.dark-theme {
+  --bg-color: #121212;
+  --bg-color-secondary: #1e1e1e;
+  --text-color-primary: #ffffff;
+  --text-color-regular: #e0e0e0;
+  --text-color-secondary: #a0a0a0;
+  --border-color-base: #313131;
+  --border-color-light: #424242;
+  --card-bg-color: #1e1e1e;
+  --header-bg-color: #1a1a1a;
+  
+  // 覆盖全局样式
+  body {
+    background-color: var(--bg-color-secondary);
+    color: var(--text-color-primary);
+  }
+  
+  .card {
+    background-color: var(--card-bg-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    &:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+  }
+  
+  .tag {
+    background-color: #313131;
+    color: #e0e0e0;
+  }
+  
+  // 滚动条
+  ::-webkit-scrollbar-track {
+    background: var(--bg-color-secondary);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-color-base);
+    
+    &:hover {
+      background: var(--border-color-light);
+    }
+  }
+}
+
+// 粉色主题
+.pink-theme {
+  --primary-color: #{$primary-color};
+  --primary-color-light: #{$primary-color-light};
+  --primary-color-dark: #{$primary-color-dark};
+}
+
+// 蓝色主题
+.blue-theme {
+  --primary-color: #1976d2;
+  --primary-color-light: #42a5f5;
+  --primary-color-dark: #0d47a1;
+}
+
+// 绿色主题
+.green-theme {
+  --primary-color: #388e3c;
+  --primary-color-light: #66bb6a;
+  --primary-color-dark: #1b5e20;
+}
+
+// 紫色主题
+.purple-theme {
+  --primary-color: #7b1fa2;
+  --primary-color-light: #ba68c8;
+  --primary-color-dark: #4a148c;
+} 
