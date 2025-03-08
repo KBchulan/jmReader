@@ -70,7 +70,8 @@ function generateMockChapters(comicId: number | string): Chapter[] {
         title: '第1话:神秘的开始',
         order: 1,
         updateTime: new Date().toISOString().split('T')[0],
-        pageCount: mockImagePaths.length
+        pageCount: mockImagePaths.length,
+        cover: mockImagePaths[0]
       }
     ]
   }
