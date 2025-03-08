@@ -22,6 +22,7 @@
 - **路由管理**：Vue Router
 - **HTTP客户端**：Axios
 - **样式预处理器**：SCSS
+- **后端**：Python
 
 ## 安装和使用
 
@@ -35,8 +36,8 @@
 1. 克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/comic-reader.git
-cd comic-reader
+git clone https://github.com/KBchulan/JMR.git
+cd JMR
 ```
 
 2. 安装依赖
