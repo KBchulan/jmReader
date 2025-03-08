@@ -1,6 +1,7 @@
 <template>
   <div v-if="!isOnline || showConnectionStatus" class="network-status" :class="{ 'is-offline': !isOnline }">
-    <el-alert :title="isOnline ? '网络已连接' : '网络连接已断开'" :type="isOnline ? 'success' : 'error'" :closable="isOnline" @close="hideConnectionStatus">
+    <el-alert :title="isOnline ? '网络已连接' : '网络连接已断开'" :type="isOnline ? 'success' : 'error'" :closable="isOnline"
+      @close="hideConnectionStatus">
       <template #default>
         <div class="alert-content">
           <el-icon class="status-icon">
@@ -64,22 +65,22 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 1000;
-  
+
   &.is-offline {
     .el-alert {
       margin: 0;
     }
   }
-  
+
   .alert-content {
     display: flex;
     align-items: center;
     gap: 5px;
   }
-  
+
   .status-icon {
     font-size: 18px;
     margin-right: 5px;
   }
 }
-</style> 
+</style>

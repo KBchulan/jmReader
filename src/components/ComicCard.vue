@@ -1,5 +1,5 @@
 <template>
-  <div class="comic-card card" @click="navigateToDetail">
+  <div class="comic-card" @click="navigateToDetail">
     <div class="comic-cover">
       <lazy-image :src="comic.cover" :alt="comic.title" />
       <div class="comic-status" :class="comic.status">
@@ -13,7 +13,7 @@
       </div>
       <div class="comic-meta">
         <span class="comic-author truncate">{{ comic.author }}</span>
-        <span class="comic-update">{{ comic.updateTime }}</span>
+        <span class="comic-update">{{ formatDate(comic.updateTime) }}</span>
       </div>
     </div>
   </div>
@@ -33,85 +33,136 @@ const router = useRouter()
 const navigateToDetail = () => {
   router.push(`/comic/${props.comic.id}`)
 }
+
+// 格式化日期
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 0) {
+    return '今天'
+  } else if (diffDays === 1) {
+    return '昨天'
+  } else if (diffDays < 7) {
+    return `${diffDays}天前`
+  } else if (diffDays < 30) {
+    return `${Math.floor(diffDays / 7)}周前`
+  } else {
+    return `${date.getMonth() + 1}月${date.getDate()}日`
+  }
+}
 </script>
 
 <style scoped lang="scss">
+@use "sass:color";
+
 .comic-card {
   cursor: pointer;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .comic-cover {
   position: relative;
   padding-top: 133%; // 3:4 比例
   overflow: hidden;
-  
+
   .lazy-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
+    object-fit: cover;
   }
-  
+
   .comic-status {
     position: absolute;
-    top: 10px;
+    top: 8px;
     right: 0;
-    padding: 2px 8px;
+    padding: 2px 6px;
     font-size: 12px;
     color: white;
     border-radius: 4px 0 0 4px;
-    z-index: 1;
-    
+    z-index: 2;
+    font-weight: 500;
+
     &.ongoing {
-      background-color: var(--primary-color, #fb7299);
+      background-color: #fb7299;
     }
-    
+
     &.completed {
-      background-color: var(--success-color, #67c23a);
+      background-color: #67c23a;
     }
   }
 }
 
 .comic-info {
-  padding: 12px;
+  padding: 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .comic-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  margin: 0 0 8px;
-  color: var(--text-color-primary, #303133);
+  margin: 0 0 6px;
+  color: #303133;
+  line-height: 1.4;
 }
 
 .comic-tags {
-  margin-bottom: 8px;
-  min-height: 24px;
+  margin-bottom: 6px;
+  min-height: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  .tag {
+    display: inline-block;
+    padding: 1px 4px;
+    font-size: 12px;
+    border-radius: 2px;
+    background-color: rgba(251, 114, 153, 0.1);
+    color: #fb7299;
+  }
 }
 
 .comic-meta {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--text-color-secondary, #909399);
+  color: #909399;
   margin-top: auto;
 }
 
 .comic-author {
   max-width: 60%;
+  font-weight: 500;
 }
 
-.comic-card:hover {
-  .comic-cover .lazy-image {
-    transform: scale(1.05);
-  }
+.comic-update {
+  color: #909399;
 }
-</style> 
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

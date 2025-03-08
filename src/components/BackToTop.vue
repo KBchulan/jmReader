@@ -81,17 +81,17 @@ onUnmounted(() => {
   cursor: pointer;
   z-index: 99;
   transition: background-color 0.3s, transform 0.3s;
-  
+
   &:hover {
     background-color: var(--primary-color-light, #ffa5c2);
     transform: translateY(-3px);
   }
-  
+
   &:active {
     background-color: var(--primary-color-dark, #d65f87);
     transform: translateY(0);
   }
-  
+
   .el-icon {
     font-size: 20px;
   }
@@ -107,4 +107,4 @@ onUnmounted(() => {
   opacity: 0;
   transform: translateY(10px);
 }
-</style> 
+</style>

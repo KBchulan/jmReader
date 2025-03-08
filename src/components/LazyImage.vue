@@ -3,16 +3,11 @@
     <div v-if="!loaded && !error" class="lazy-image-placeholder">
       <div class="lazy-image-skeleton"></div>
     </div>
-    <img
-      ref="imgRef"
-      :src="src"
-      :alt="alt"
-      v-show="loaded"
-      @load="handleLoad"
-      @error="handleError"
-    />
+    <img ref="imgRef" :src="src" :alt="alt" v-show="loaded" @load="handleLoad" @error="handleError" />
     <div v-if="error" class="lazy-image-error">
-      <el-icon><PictureFilled /></el-icon>
+      <el-icon>
+        <PictureFilled />
+      </el-icon>
       <span>加载失败</span>
     </div>
   </div>
@@ -77,14 +72,14 @@ onUnmounted(() => {
   height: 100%;
   background-color: var(--bg-color-secondary, #f5f7fa);
   border-radius: 4px;
-  
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s;
   }
-  
+
   &.is-loaded img {
     opacity: 1;
   }
@@ -121,12 +116,12 @@ onUnmounted(() => {
   justify-content: center;
   background-color: var(--bg-color-secondary, #f5f7fa);
   color: var(--text-color-secondary, #909399);
-  
+
   .el-icon {
     font-size: 24px;
     margin-bottom: 8px;
   }
-  
+
   span {
     font-size: 12px;
   }
@@ -136,8 +131,9 @@ onUnmounted(() => {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
 }
-</style> 
+</style>

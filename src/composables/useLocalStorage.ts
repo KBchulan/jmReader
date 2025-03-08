@@ -17,7 +17,7 @@ export function useLocalStorage<T>(
   try {
     // 尝试从存储中获取数据
     const item = storage.getItem(key)
-    
+
     if (item) {
       storedValue.value = JSON.parse(item)
     } else {

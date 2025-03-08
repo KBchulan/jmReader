@@ -48,7 +48,7 @@ function generateMockComics(): Comic[] {
       title: '小魔仙',
       cover: mockImagePaths[0],
       author: '小魔仙作者',
-      description: '这是小魔仙漫画的描述。讲述了一个充满魔法与冒险的故事，包含了魔法、冒险、奇幻等元素。',
+      description: '百合小漫画',
       tags: ['魔法', '冒险', '奇幻'],
       updateTime: new Date().toISOString().split('T')[0],
       status: 'completed'
@@ -67,7 +67,7 @@ function generateMockChapters(comicId: number | string): Chapter[] {
       {
         id: `${comicId}-1`,
         comicId,
-        title: '第1话：神秘的开始',
+        title: '第1话:神秘的开始',
         order: 1,
         updateTime: new Date().toISOString().split('T')[0],
         pageCount: mockImagePaths.length

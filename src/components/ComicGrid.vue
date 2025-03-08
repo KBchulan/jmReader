@@ -6,32 +6,21 @@
       <el-skeleton :rows="2" animated />
       <el-skeleton :rows="2" animated />
     </div>
-    
+
     <div v-else-if="comics.length === 0" class="empty-container">
       <el-empty description="暂无漫画" />
     </div>
-    
+
     <div v-else class="grid-container">
-      <div
-        v-for="comic in comics"
-        :key="comic.id"
-        class="grid-item"
-      >
+      <div v-for="comic in comics" :key="comic.id" class="grid-item">
         <comic-card :comic="comic" />
       </div>
     </div>
-    
+
     <div v-if="pagination && !loading" class="pagination-container">
-      <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[12, 24, 36, 48]"
-        :background="true"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[12, 24, 36, 48]"
+        :background="true" layout="total, sizes, prev, pager, next, jumper" :total="total"
+        @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
   </div>
 </template>
@@ -101,7 +90,7 @@ const handleSizeChange = (size: number) => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 15px;
@@ -117,4 +106,4 @@ const handleSizeChange = (size: number) => {
   display: flex;
   justify-content: center;
 }
-</style> 
+</style>

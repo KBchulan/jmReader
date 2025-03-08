@@ -63,6 +63,54 @@ const router = createRouter({
           meta: {
             title: '最新更新'
           }
+        },
+        {
+          path: 'about',
+          name: 'about',
+          component: () => import('@/views/about/AboutView.vue'),
+          meta: {
+            title: '关于我们'
+          }
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: () => import('@/views/about/ContactView.vue'),
+          meta: {
+            title: '联系我们'
+          }
+        },
+        {
+          path: 'join',
+          name: 'join',
+          component: () => import('@/views/about/JoinView.vue'),
+          meta: {
+            title: '加入我们'
+          }
+        },
+        {
+          path: 'faq',
+          name: 'faq',
+          component: () => import('@/views/about/FaqView.vue'),
+          meta: {
+            title: '常见问题'
+          }
+        },
+        {
+          path: 'terms',
+          name: 'terms',
+          component: () => import('@/views/about/TermsView.vue'),
+          meta: {
+            title: '使用条款'
+          }
+        },
+        {
+          path: 'privacy',
+          name: 'privacy',
+          component: () => import('@/views/about/PrivacyView.vue'),
+          meta: {
+            title: '隐私政策'
+          }
         }
       ]
     },

@@ -34,33 +34,9 @@
           </el-input>
         </div>
 
-        <!-- 主题切换 -->
-        <div class="theme-switcher">
-          <el-dropdown trigger="click" @command="handleThemeChange">
-            <el-button type="primary" plain size="small">
-              主题设置
-              <el-icon class="el-icon--right">
-                <ArrowDown />
-              </el-icon>
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item-group title="主题模式">
-                  <el-dropdown-item v-for="mode in themeModes" :key="mode.value"
-                    :command="{ type: 'mode', value: mode.value }" :class="{ 'is-active': themeMode === mode.value }">
-                    {{ mode.label }}
-                  </el-dropdown-item>
-                </el-dropdown-item-group>
-                <el-dropdown-item-group title="颜色主题">
-                  <el-dropdown-item v-for="theme in colorThemes" :key="theme.value"
-                    :command="{ type: 'color', value: theme.value }"
-                    :class="{ 'is-active': colorTheme === theme.value }">
-                    {{ theme.label }}
-                  </el-dropdown-item>
-                </el-dropdown-item-group>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+        <!-- 登录按钮 -->
+        <div class="login-button">
+          <el-button type="primary" size="small">登录</el-button>
         </div>
       </div>
     </div>
@@ -70,14 +46,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Search, ArrowDown } from '@element-plus/icons-vue'
-import { useTheme, themeModes, colorThemes } from '@/composables/useTheme'
+import { Search } from '@element-plus/icons-vue'
+import { useTheme } from '@/composables/useTheme'
 
 const router = useRouter()
 const searchKeyword = ref('')
 
 // 使用主题组合式函数
-const { themeMode, colorTheme, setThemeMode, setColorTheme } = useTheme()
+const { themeMode, colorTheme } = useTheme()
 
 // 处理搜索
 const handleSearch = () => {
@@ -88,28 +64,28 @@ const handleSearch = () => {
     })
   }
 }
-
-// 处理主题变更
-const handleThemeChange = (command: { type: 'mode' | 'color'; value: string }) => {
-  if (command.type === 'mode') {
-    setThemeMode(command.value as any)
-  } else if (command.type === 'color') {
-    setColorTheme(command.value)
-  }
-}
 </script>
 
 <style scoped lang="scss">
+@use "sass:color";
+
 .app-header {
-  background-color: var(--header-bg-color, white);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fb7299;
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 60px;
+  height: 56px;
   display: flex;
   align-items: center;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s;
+  color: white;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
 .header-content {
@@ -122,7 +98,7 @@ const handleThemeChange = (command: { type: 'mode' | 'color'; value: string }) =
 .logo {
   h1 {
     font-size: 1.5rem;
-    color: var(--primary-color, #fb7299);
+    color: white;
     margin: 0;
     font-weight: bold;
   }
@@ -136,22 +112,25 @@ const handleThemeChange = (command: { type: 'mode' | 'color'; value: string }) =
   .logo-icon {
     width: 24px;
     height: 24px;
-    stroke: var(--primary-color, #fb7299);
+    stroke: white;
   }
 }
 
 .nav-menu {
   display: flex;
-  gap: 20px;
+  gap: 30px;
 
   a {
     padding: 5px 0;
     position: relative;
-    color: var(--text-color-regular, #606266);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
 
     &:hover,
     &.active {
-      color: var(--primary-color, #fb7299);
+      color: white;
     }
 
     &.active::after {
@@ -161,7 +140,7 @@ const handleThemeChange = (command: { type: 'mode' | 'color'; value: string }) =
       left: 0;
       width: 100%;
       height: 2px;
-      background-color: var(--primary-color, #fb7299);
+      background-color: white;
     }
   }
 }
@@ -171,22 +150,37 @@ const handleThemeChange = (command: { type: 'mode' | 'color'; value: string }) =
 
   .search-input {
     :deep(.el-input__inner) {
-      border-radius: 20px;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+    
+    :deep(.el-input__suffix) {
+      color: white;
     }
   }
 
   .search-icon {
     cursor: pointer;
-
-    &:hover {
-      color: var(--primary-color, #fb7299);
-    }
+    color: white;
   }
 }
 
-.theme-switcher {
-  :deep(.el-dropdown-menu__item.is-active) {
-    color: var(--primary-color, #fb7299);
+.login-button {
+  :deep(.el-button) {
+    background-color: white;
+    color: #fb7299;
+    border: none;
+    font-weight: 500;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
   }
 }
 
