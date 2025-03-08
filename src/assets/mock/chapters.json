@@ -30,5 +30,13 @@
     "order": 1,
     "updateTime": "2025-03-08",
     "pageCount": 30
+  },
+  {
+    "id": "525227-1",
+    "comicId": "525227",
+    "title": "第1话",
+    "order": 1,
+    "updateTime": "2025-03-09",
+    "pageCount": 41
   }
 ]

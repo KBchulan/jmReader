@@ -157,7 +157,7 @@ const downloadComic = async () => {
   downloadSuccess.value = true
 
   try {
-    const response = await axios.get(`http://localhost:3000/download/${comicId.value}`)
+    const response = await axios.get(`http://0.0.0.0:3000/download/${comicId.value}`)
     downloadMessage.value = response.data.message
     downloadSuccess.value = true
     ElMessage.success(response.data.message)
