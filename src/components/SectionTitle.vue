@@ -25,11 +25,15 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
+@use "sass:color";
+
 .section-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #3a3a3a;
   
   .title-wrapper {
     display: flex;
@@ -37,29 +41,31 @@ defineProps<{
   }
 
   .title-indicator {
-    width: 4px;
-    height: 16px;
+    width: 5px;
+    height: 20px;
     background-color: #fb7299;
     border-radius: 2px;
-    margin-right: 8px;
+    margin-right: 10px;
   }
 
   .title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
-    color: #303133;
+    color: white;
     margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .more-link {
     font-size: 14px;
     display: flex;
     align-items: center;
-    color: #909399;
+    color: #fb7299;
     text-decoration: none;
+    font-weight: 500;
 
     &:hover {
-      color: #fb7299;
+      color: color.adjust(#fb7299, $lightness: -10%);
     }
 
     .el-icon {

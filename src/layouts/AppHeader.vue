@@ -6,7 +6,8 @@
         <div class="logo">
           <router-link to="/">
             <div class="logo-content">
-              <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
@@ -23,37 +24,93 @@
           <router-link to="/latest" active-class="active">最新更新</router-link>
         </nav>
 
-        <!-- 搜索框 -->
-        <div class="search-box">
-          <el-input v-model="searchKeyword" placeholder="搜索漫画名称或ID" class="search-input" @keyup.enter="handleSearch">
-            <template #suffix>
-              <el-icon class="search-icon" @click="handleSearch">
-                <Search />
-              </el-icon>
-            </template>
-          </el-input>
-        </div>
+        <!-- 右侧功能区 -->
+        <div class="header-actions">
+          <!-- 搜索框 -->
+          <div class="search-box">
+            <el-input v-model="searchKeyword" placeholder="搜索漫画名称或ID" class="search-input" @keyup.enter="handleSearch">
+              <template #suffix>
+                <el-icon class="search-icon" @click="handleSearch">
+                  <Search />
+                </el-icon>
+              </template>
+            </el-input>
+          </div>
 
-        <!-- 登录按钮 -->
-        <div class="login-button">
-          <el-button type="primary" size="small">登录</el-button>
+          <!-- 下载按钮 -->
+          <div class="action-btn download-btn">
+            <el-button type="primary" size="small" @click="showDownloadDialog = true">
+              下载
+            </el-button>
+          </div>
+
+          <!-- 登录按钮 -->
+          <div class="action-btn login-button">
+            <el-button type="primary" size="small">
+              登录
+            </el-button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- 下载弹窗 -->
+    <el-dialog v-model="showDownloadDialog" title="下载漫画" width="400px" center :show-close="true"
+      :close-on-click-modal="false" :close-on-press-escape="true">
+      <div class="download-dialog-content">
+        <p class="download-tip">输入6位漫画ID，一键下载您喜欢的漫画</p>
+        <el-input v-model="comicId" placeholder="请输入6位漫画ID" maxlength="6" show-word-limit clearable
+          class="download-input">
+          <template #prefix>
+            <el-icon>
+              <Download />
+            </el-icon>
+          </template>
+        </el-input>
+        <div v-if="downloadMessage" class="download-message"
+          :class="{ 'success': downloadSuccess, 'error': !downloadSuccess }">
+          <el-icon v-if="downloadSuccess">
+            <Check />
+          </el-icon>
+          <el-icon v-else>
+            <Warning />
+          </el-icon>
+          {{ downloadMessage }}
+        </div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="showDownloadDialog = false">取消</el-button>
+          <el-button type="primary" :loading="downloading" @click="downloadComic"
+            :disabled="!comicId || comicId.length !== 6">
+            下载
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </header>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Search } from '@element-plus/icons-vue'
+import { Search, Download, Check, Warning } from '@element-plus/icons-vue'
 import { useTheme } from '@/composables/useTheme'
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const searchKeyword = ref('')
 
 // 使用主题组合式函数
 const { themeMode, colorTheme } = useTheme()
+
+// 下载漫画相关
+const showDownloadDialog = ref(false)
+const comicId = ref('')
+const downloading = ref(false)
+const downloadMessage = ref('')
+const downloadSuccess = ref(false)
 
 // 处理搜索
 const handleSearch = () => {
@@ -62,6 +119,46 @@ const handleSearch = () => {
       path: '/search',
       query: { keyword: searchKeyword.value.trim() }
     })
+  }
+}
+
+// 下载漫画
+const downloadComic = async () => {
+  if (!comicId.value) {
+    ElMessage.warning('请输入漫画ID')
+    return
+  }
+
+  if (!/^\d{6}$/.test(comicId.value)) {
+    ElMessage.warning('漫画ID必须是6位数字')
+    downloadSuccess.value = false
+    downloadMessage.value = '漫画ID必须是6位数字'
+    return
+  }
+
+  downloading.value = true
+  downloadMessage.value = '正在下载，请稍候...'
+  downloadSuccess.value = true
+
+  try {
+    const response = await axios.get(`http://localhost:3000/download/${comicId.value}`)
+    downloadMessage.value = response.data.message
+    downloadSuccess.value = true
+    ElMessage.success(response.data.message)
+
+    // 下载完成后关闭弹窗
+    setTimeout(() => {
+      showDownloadDialog.value = false
+      comicId.value = ''
+      downloadMessage.value = ''
+    }, 3000)
+  } catch (error: any) {
+    console.error('下载漫画失败', error)
+    downloadMessage.value = `下载失败: ${error.response?.data?.detail || error.message}`
+    downloadSuccess.value = false
+    ElMessage.error(downloadMessage.value)
+  } finally {
+    downloading.value = false
   }
 }
 </script>
@@ -74,11 +171,12 @@ const handleSearch = () => {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 56px;
+  height: 70px;
   display: flex;
   align-items: center;
   transition: background-color 0.3s;
   color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -91,24 +189,25 @@ const handleSearch = () => {
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 100%;
 }
 
 .logo {
+  margin-right: 40px;
+
   h1 {
     font-size: 1.5rem;
     color: white;
     margin: 0;
     font-weight: bold;
   }
-  
+
   .logo-content {
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  
+
   .logo-icon {
     width: 24px;
     height: 24px;
@@ -119,14 +218,16 @@ const handleSearch = () => {
 .nav-menu {
   display: flex;
   gap: 30px;
+  flex: 1;
 
   a {
-    padding: 5px 0;
+    padding: 8px 0;
     position: relative;
     color: rgba(255, 255, 255, 0.85);
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
+    transition: color 0.2s;
 
     &:hover,
     &.active {
@@ -136,13 +237,19 @@ const handleSearch = () => {
     &.active::after {
       content: '';
       position: absolute;
-      bottom: -2px;
+      bottom: -20px;
       left: 0;
       width: 100%;
-      height: 2px;
+      height: 3px;
       background-color: white;
     }
   }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .search-box {
@@ -151,15 +258,16 @@ const handleSearch = () => {
   .search-input {
     :deep(.el-input__inner) {
       border-radius: 4px;
+      height: 36px;
       background-color: rgba(255, 255, 255, 0.2);
       border: none;
       color: white;
-      
+
       &::placeholder {
         color: rgba(255, 255, 255, 0.7);
       }
     }
-    
+
     :deep(.el-input__suffix) {
       color: white;
     }
@@ -171,16 +279,88 @@ const handleSearch = () => {
   }
 }
 
-.login-button {
+.action-btn {
   :deep(.el-button) {
     background-color: white;
     color: #fb7299;
     border: none;
     font-weight: 500;
-    
+    border-radius: 4px;
+    padding: 0 15px;
+    height: 36px;
+    transition: all 0.2s;
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.9);
     }
+  }
+}
+
+.download-dialog-content {
+  padding: 10px 0;
+
+  .download-tip {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #606266;
+    font-size: 14px;
+  }
+
+  .download-input {
+    margin-bottom: 15px;
+  }
+
+  .download-message {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &.success {
+      background-color: rgba(103, 194, 58, 0.1);
+      color: #67c23a;
+    }
+
+    &.error {
+      background-color: rgba(245, 108, 108, 0.1);
+      color: #f56c6c;
+    }
+  }
+}
+
+:deep(.el-dialog) {
+  border-radius: 8px;
+  overflow: hidden;
+
+  .el-dialog__header {
+    margin: 0;
+    padding: 15px 20px;
+    background-color: #fb7299;
+    color: white;
+
+    .el-dialog__title {
+      color: white;
+      font-weight: 600;
+    }
+
+    .el-dialog__close {
+      color: white;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+
+  .el-dialog__body {
+    padding: 20px;
+  }
+
+  .el-dialog__footer {
+    padding: 10px 20px 20px;
+    border-top: 1px solid #f0f0f0;
   }
 }
 
@@ -191,6 +371,12 @@ const handleSearch = () => {
 
   .search-box {
     width: 160px;
+  }
+
+  .action-btn {
+    :deep(.el-button) {
+      padding: 0 10px;
+    }
   }
 }
 </style>

@@ -64,14 +64,14 @@ const formatDate = (dateString: string) => {
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #2a2a2a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -122,7 +122,7 @@ const formatDate = (dateString: string) => {
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 6px;
-  color: #303133;
+  color: white;
   line-height: 1.4;
 }
 
@@ -138,7 +138,7 @@ const formatDate = (dateString: string) => {
     padding: 1px 4px;
     font-size: 12px;
     border-radius: 2px;
-    background-color: rgba(251, 114, 153, 0.1);
+    background-color: rgba(251, 114, 153, 0.2);
     color: #fb7299;
   }
 }
@@ -147,7 +147,7 @@ const formatDate = (dateString: string) => {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #909399;
+  color: #aaa;
   margin-top: auto;
 }
 
@@ -157,7 +157,7 @@ const formatDate = (dateString: string) => {
 }
 
 .comic-update {
-  color: #909399;
+  color: #aaa;
 }
 
 .truncate {
