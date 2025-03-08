@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     
     # 安全配置
     security_enabled: bool = True
-    max_request_size: int = 10485760  # 10MB
+    max_request_size: int = 10485760 * 3  # 10MB
     
     # 漫画下载配置
     download_path: Optional[str] = None

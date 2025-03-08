@@ -1,4 +1,4 @@
-from fastapi import Request, HTTPException
+from fastapi import Request
 from fastapi.responses import JSONResponse
 import logging
 from app.config.settings import get_settings

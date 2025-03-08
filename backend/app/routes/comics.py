@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Path
-from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Query, Path
+from typing import List
 
-from app.models.comic import Comic, Chapter, Page, PaginatedResult
+from app.models.comic import Comic, PaginatedResult
 from app.services import local_comic_service
 
 router = APIRouter(tags=["comics"])

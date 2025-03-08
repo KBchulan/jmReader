@@ -1,11 +1,8 @@
 import logging
-import os
 import json
 import subprocess
 import sys
-import shutil
-from datetime import datetime
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from pathlib import Path
 
 from app.models.comic import Comic, Chapter, Page, PaginatedResult

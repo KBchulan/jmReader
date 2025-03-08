@@ -2,7 +2,6 @@ from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import subprocess
-import os
 from pathlib import Path
 
 app = FastAPI(title="简化版漫画下载API")

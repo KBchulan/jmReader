@@ -1,8 +1,6 @@
 import sys
-import os
 import json
 import shutil
-import glob
 import time
 import re
 from pathlib import Path
@@ -99,7 +97,7 @@ def download_and_process(comic_id):
         # 更新前端的漫画列表
         update_frontend_comics_list(comic_id, comic_info, image_paths)
         
-        print(f"漫画 {comic_id} 处理完成，已添加到前端mock数据")
+        print(f"漫画 {comic_id} 处理完成, 已添加到前端mock数据")
         return True
     except Exception as e:
         print(f"下载或处理漫画 {comic_id} 时出错: {e}")

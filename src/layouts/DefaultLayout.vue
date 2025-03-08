@@ -13,6 +13,7 @@
     </main>
     <app-footer />
     <back-to-top />
+    <theme-switcher />
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import AppHeader from './AppHeader.vue'
 import AppFooter from './AppFooter.vue'
 import NetworkStatus from '@/components/NetworkStatus.vue'
 import BackToTop from '@/components/BackToTop.vue'
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 </script>
 
 <style scoped lang="scss">
