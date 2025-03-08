@@ -8,6 +8,7 @@ export const useComicStore = defineStore('comic', () => {
   const comics = ref<Comic[]>([])
   const latestComics = ref<Comic[]>([])
   const recommendedComics = ref<Comic[]>([])
+  const filteredComics = ref<Comic[]>([])
   const currentComic = ref<Comic | null>(null)
   const currentChapter = ref<Chapter | null>(null)
   const currentPages = ref<Page[]>([])
@@ -119,11 +120,41 @@ export const useComicStore = defineStore('comic', () => {
     }
   }
   
+  // 根据标签获取漫画
+  async function fetchComicsByTag(tag: string, page = 1, pageSize = 20) {
+    try {
+      loading.value = true
+      error.value = null
+      
+      // 先获取所有漫画
+      await fetchComics(page, pageSize)
+      
+      // 然后根据标签筛选
+      filteredComics.value = comics.value.filter(comic => 
+        comic.tags && comic.tags.includes(tag)
+      )
+      
+      return {
+        items: filteredComics.value,
+        total: filteredComics.value.length,
+        page,
+        pageSize,
+        hasMore: false
+      }
+    } catch (err: any) {
+      error.value = err.message || '获取分类漫画失败'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+  
   // 重置状态
   function resetState() {
     comics.value = []
     latestComics.value = []
     recommendedComics.value = []
+    filteredComics.value = []
     currentComic.value = null
     currentChapter.value = null
     currentPages.value = []
@@ -135,6 +166,7 @@ export const useComicStore = defineStore('comic', () => {
     comics,
     latestComics,
     recommendedComics,
+    filteredComics,
     currentComic,
     currentChapter,
     currentPages,
@@ -154,6 +186,7 @@ export const useComicStore = defineStore('comic', () => {
     fetchComicDetail,
     fetchChapterPages,
     searchComics,
+    fetchComicsByTag,
     resetState
   }
 }) 

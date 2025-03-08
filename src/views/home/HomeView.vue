@@ -49,7 +49,7 @@
 
     <!-- 推荐漫画 -->
     <div class="recommended-section">
-      <section-title title="推荐漫画" more-link="/category" />
+      <section-title title="推荐漫画" more-link="/ranking" />
       <div class="recommended-grid">
         <div v-if="loading" class="loading-container">
           <el-skeleton :rows="2" animated />
@@ -276,6 +276,7 @@ watch([() => comics.value, () => recommendedComics.value, () => latestComics.val
   padding-bottom: 40px;
   background-color: #222;
   color: white;
+  margin-top: 0;
 }
 
 .banner-section {

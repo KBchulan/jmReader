@@ -18,10 +18,10 @@
 
         <!-- 导航 -->
         <nav class="nav-menu">
-          <router-link to="/" active-class="active">首页</router-link>
-          <router-link to="/category" active-class="active">分类</router-link>
-          <router-link to="/ranking" active-class="active">排行榜</router-link>
-          <router-link to="/latest" active-class="active">最新更新</router-link>
+          <router-link to="/" exact-active-class="active">首页</router-link>
+          <router-link to="/category" exact-active-class="active">分类</router-link>
+          <router-link to="/ranking" exact-active-class="active">排行榜</router-link>
+          <router-link to="/latest" exact-active-class="active">最新更新</router-link>
         </nav>
 
         <!-- 右侧功能区 -->
@@ -55,7 +55,7 @@
     </div>
 
     <!-- 下载弹窗 -->
-    <el-dialog v-model="showDownloadDialog" title="下载漫画" width="400px" center :show-close="true"
+    <el-dialog v-model="showDownloadDialog" title="下载漫画" width="360px" center :show-close="true"
       :close-on-click-modal="false" :close-on-press-escape="true">
       <div class="download-dialog-content">
         <p class="download-tip">输入6位漫画ID，一键下载您喜欢的漫画</p>
@@ -172,6 +172,7 @@ const downloadComic = async () => {
   top: 0;
   z-index: 100;
   height: 70px;
+  min-height: 70px;
   display: flex;
   align-items: center;
   transition: background-color 0.3s;
@@ -219,6 +220,8 @@ const downloadComic = async () => {
   display: flex;
   gap: 30px;
   flex: 1;
+  height: 100%;
+  align-items: center;
 
   a {
     padding: 8px 0;
@@ -228,6 +231,9 @@ const downloadComic = async () => {
     font-weight: 500;
     text-decoration: none;
     transition: color 0.2s;
+    height: 100%;
+    display: flex;
+    align-items: center;
 
     &:hover,
     &.active {
@@ -304,6 +310,7 @@ const downloadComic = async () => {
     margin-bottom: 15px;
     color: #606266;
     font-size: 14px;
+    text-align: center;
   }
 
   .download-input {
@@ -339,10 +346,12 @@ const downloadComic = async () => {
     padding: 15px 20px;
     background-color: #fb7299;
     color: white;
+    text-align: center;
 
     .el-dialog__title {
       color: white;
       font-weight: 600;
+      font-size: 18px;
     }
 
     .el-dialog__close {
@@ -361,6 +370,8 @@ const downloadComic = async () => {
   .el-dialog__footer {
     padding: 10px 20px 20px;
     border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
   }
 }
 

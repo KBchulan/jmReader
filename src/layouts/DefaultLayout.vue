@@ -33,5 +33,6 @@ import BackToTop from '@/components/BackToTop.vue'
 .main-content {
   flex: 1;
   padding: 20px 0;
+  margin-top: 0;
 }
 </style> 

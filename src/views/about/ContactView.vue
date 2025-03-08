@@ -13,21 +13,21 @@
               <el-icon><Message /></el-icon>
               <div class="info-content">
                 <h3>电子邮箱</h3>
-                <p>contact@mangareader.com</p>
+                <p>18737519552@163.com</p>
               </div>
             </div>
             <div class="info-item">
               <el-icon><Location /></el-icon>
               <div class="info-content">
                 <h3>办公地址</h3>
-                <p>北京市海淀区中关村科技园区</p>
+                <p>不告诉你</p>
               </div>
             </div>
             <div class="info-item">
               <el-icon><Phone /></el-icon>
               <div class="info-content">
                 <h3>联系电话</h3>
-                <p>010-12345678</p>
+                <p>18737519552</p>
               </div>
             </div>
           </section>

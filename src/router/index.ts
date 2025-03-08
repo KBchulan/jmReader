@@ -43,7 +43,7 @@ const router = createRouter({
         {
           path: 'category',
           name: 'category',
-          component: () => import('@/views/home/HomeView.vue'),
+          component: () => import('@/views/category/CategoryView.vue'),
           meta: {
             title: '分类'
           }
@@ -51,7 +51,7 @@ const router = createRouter({
         {
           path: 'ranking',
           name: 'ranking',
-          component: () => import('@/views/home/HomeView.vue'),
+          component: () => import('@/views/ranking/RankingView.vue'),
           meta: {
             title: '排行榜'
           }
@@ -59,7 +59,7 @@ const router = createRouter({
         {
           path: 'latest',
           name: 'latest',
-          component: () => import('@/views/home/HomeView.vue'),
+          component: () => import('@/views/latest/LatestView.vue'),
           meta: {
             title: '最新更新'
           }

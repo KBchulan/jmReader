@@ -9,6 +9,9 @@ export interface Comic {
   updateTime: string;
   status: 'ongoing' | 'completed';
   chapters?: Chapter[];
+  views?: number;
+  rating?: string | number;
+  favorites?: number;
 }
 
 // 章节类型定义
@@ -19,6 +22,7 @@ export interface Chapter {
   order: number;
   updateTime: string;
   pageCount: number;
+  cover: string;
 }
 
 // 页面类型定义

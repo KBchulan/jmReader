@@ -1,13 +1,5 @@
 [
   {
-    "id": "416330-1",
-    "comicId": "416330",
-    "title": "第1话",
-    "order": 1,
-    "updateTime": "2025-03-07",
-    "pageCount": 31
-  },
-  {
     "id": "482543-1",
     "comicId": "482543",
     "title": "第1话",
@@ -22,5 +14,13 @@
     "order": 1,
     "updateTime": "2025-03-08",
     "pageCount": 23
+  },
+  {
+    "id": "364547-1",
+    "comicId": "364547",
+    "title": "第1话",
+    "order": 1,
+    "updateTime": "2025-03-08",
+    "pageCount": 69
   }
 ]

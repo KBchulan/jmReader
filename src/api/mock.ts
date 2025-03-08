@@ -49,7 +49,7 @@ function generateMockComics(): Comic[] {
       cover: mockImagePaths[0],
       author: '小魔仙作者',
       description: '百合小漫画',
-      tags: ['魔法', '冒险', '奇幻'],
+      tags: ['百合',],
       updateTime: new Date().toISOString().split('T')[0],
       status: 'completed'
     }
