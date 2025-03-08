@@ -129,10 +129,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 设置页面标题
   const appTitle = import.meta.env.VITE_APP_TITLE || '漫画阅读'
-  document.title = to.meta.title 
+  document.title = to.meta.title
     ? `${to.meta.title} - ${appTitle}`
     : appTitle
-  
+
   next()
 })
 
