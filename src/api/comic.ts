@@ -1,5 +1,5 @@
 import { get } from '@/utils/request'
-import type { Comic, Chapter, Page, PaginatedResult, SearchParams } from '@/types'
+import type { Comic, Page, PaginatedResult, SearchParams } from '@/types'
 import * as mockApi from './mock'
 
 // 判断是否启用mock

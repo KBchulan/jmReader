@@ -1,7 +1,7 @@
 <template>
   <div class="ranking-view">
     <h1 class="page-title">漫画排行榜</h1>
-    
+
     <!-- 排行榜类型 -->
     <div class="ranking-tabs">
       <el-tabs v-model="activeTab" @tab-change="handleTabChange">
@@ -11,7 +11,7 @@
         <el-tab-pane label="更新排行" name="updates"></el-tab-pane>
       </el-tabs>
     </div>
-    
+
     <!-- 漫画列表 -->
     <div class="ranking-list">
       <div v-if="loading" class="loading-container">
@@ -36,7 +36,8 @@
                   <span class="rating-value">{{ Number(comic.rating || 0).toFixed(1) }}</span>
                 </span>
               </div>
-              <p class="comic-description">{{ comic.description?.substring(0, 100) }}{{ comic.description?.length > 100 ? '...' : '' }}</p>
+              <p class="comic-description">{{ comic.description?.substring(0, 100) }}{{ comic.description?.length > 100
+                ? '...' : '' }}</p>
             </div>
           </div>
         </div>
@@ -62,14 +63,14 @@ const comics = computed(() => comicStore.comics)
 // 排行榜漫画
 const rankingComics = computed(() => {
   const list = [...comics.value]
-  
+
   // 为每个漫画添加随机属性（仅用于演示）
   list.forEach(comic => {
     if (!comic.views) comic.views = Math.floor(Math.random() * 10000)
     if (!comic.rating) comic.rating = (Math.random() * 4 + 1).toFixed(1)
     if (!comic.favorites) comic.favorites = Math.floor(Math.random() * 5000)
   })
-  
+
   // 根据不同的排行类型排序
   switch (activeTab.value) {
     case 'popular':
@@ -126,20 +127,20 @@ onMounted(() => {
 
 .ranking-tabs {
   margin-bottom: 30px;
-  
+
   :deep(.el-tabs__item) {
     color: #aaa;
     font-size: 16px;
-    
+
     &.is-active {
       color: #fb7299;
     }
-    
+
     &:hover {
       color: #fb7299;
     }
   }
-  
+
   :deep(.el-tabs__active-bar) {
     background-color: #fb7299;
   }
@@ -158,7 +159,7 @@ onMounted(() => {
   border-radius: 4px;
   overflow: hidden;
   transition: all 0.3s;
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -174,7 +175,7 @@ onMounted(() => {
   font-weight: bold;
   color: white;
   background-color: #333;
-  
+
   &.top-three {
     background-color: #fb7299;
   }
@@ -190,13 +191,13 @@ onMounted(() => {
   width: 120px;
   height: 160px;
   overflow: hidden;
-  
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s;
-    
+
     &:hover {
       transform: scale(1.05);
     }
@@ -219,7 +220,7 @@ onMounted(() => {
   display: flex;
   gap: 5px;
   margin-bottom: 10px;
-  
+
   .tag {
     display: inline-block;
     padding: 2px 6px;
@@ -235,16 +236,16 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  
+
   .comic-author {
     font-size: 14px;
     color: #aaa;
   }
-  
+
   .comic-rating {
     display: flex;
     align-items: center;
-    
+
     .rating-value {
       margin-left: 5px;
       color: #ff9900;
@@ -263,4 +264,4 @@ onMounted(() => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style> 
+</style>

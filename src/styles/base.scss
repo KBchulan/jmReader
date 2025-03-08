@@ -35,11 +35,11 @@ a {
   color: vars.$primary-color;
   text-decoration: none;
   transition: color vars.$transition-duration vars.$transition-ease;
-  
+
   &:hover {
     color: vars.$primary-color-light;
   }
-  
+
   &:active {
     color: vars.$primary-color-dark;
   }
@@ -90,19 +90,19 @@ button {
   padding-left: vars.$spacing-medium;
   margin-right: auto;
   margin-left: auto;
-  
+
   @media (min-width: vars.$breakpoint-sm) {
     max-width: 720px;
   }
-  
+
   @media (min-width: vars.$breakpoint-md) {
     max-width: 960px;
   }
-  
+
   @media (min-width: vars.$breakpoint-lg) {
     max-width: 1140px;
   }
-  
+
   @media (min-width: vars.$breakpoint-xl) {
     max-width: 1320px;
   }
@@ -121,7 +121,7 @@ button {
 ::-webkit-scrollbar-thumb {
   background: vars.$border-color-base;
   border-radius: 4px;
-  
+
   &:hover {
     background: vars.$border-color-light;
   }
@@ -134,7 +134,7 @@ button {
   box-shadow: vars.$box-shadow-light;
   overflow: hidden;
   transition: transform vars.$transition-duration, box-shadow vars.$transition-duration;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: vars.$box-shadow-base;
@@ -173,4 +173,4 @@ button {
 .slide-up-leave-to {
   transform: translateY(20px);
   opacity: 0;
-} 
+}

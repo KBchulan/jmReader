@@ -28,8 +28,14 @@
         <div class="header-actions">
           <!-- 搜索框 -->
           <div class="search-box">
-            <el-input v-model="searchKeyword" placeholder="搜索漫画名称或ID" class="search-input" @keyup.enter="handleSearch">
-              <template #suffix>
+            <el-input 
+              v-model="searchKeyword" 
+              placeholder="搜索漫画名称或ID" 
+              class="search-input" 
+              @keyup.enter="handleSearch"
+              clearable
+            >
+              <template #prefix>
                 <el-icon class="search-icon" @click="handleSearch">
                   <Search />
                 </el-icon>
@@ -119,6 +125,16 @@ const handleSearch = () => {
       path: '/search',
       query: { keyword: searchKeyword.value.trim() }
     })
+
+    // 搜索后清空搜索框
+    setTimeout(() => {
+      searchKeyword.value = ''
+    }, 300)
+
+    // 记录到控制台，方便调试
+    console.log('搜索关键词:', searchKeyword.value.trim())
+  } else {
+    ElMessage.warning('请输入搜索关键词')
   }
 }
 
@@ -262,26 +278,38 @@ const downloadComic = async () => {
   width: 240px;
 
   .search-input {
-    :deep(.el-input__inner) {
+    :deep(.el-input__wrapper) {
+      background-color: white;
+      box-shadow: none !important;
       border-radius: 4px;
-      height: 36px;
-      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    :deep(.el-input__inner) {
+      color: #333 !important;
+      background-color: white;
       border: none;
-      color: white;
+      caret-color: #333;
+      -webkit-text-fill-color: #333;
+    }
 
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.7);
+    :deep(.el-input__prefix), 
+    :deep(.el-input__prefix-inner),
+    :deep(.el-input__suffix), 
+    :deep(.el-input__suffix-inner) {
+      color: #666;
+    }
+    
+    :deep(.el-input__placeholder) {
+      color: #999;
+    }
+    
+    .search-icon {
+      cursor: pointer;
+      
+      &:hover {
+        color: #409EFF;
       }
     }
-
-    :deep(.el-input__suffix) {
-      color: white;
-    }
-  }
-
-  .search-icon {
-    cursor: pointer;
-    color: white;
   }
 }
 
@@ -382,11 +410,20 @@ const downloadComic = async () => {
 
   .search-box {
     width: 160px;
+
+    .search-input {
+      :deep(.el-input__inner) {
+        height: 32px;
+        font-size: 14px;
+      }
+    }
   }
 
   .action-btn {
     :deep(.el-button) {
       padding: 0 10px;
+      height: 32px;
+      font-size: 14px;
     }
   }
 }

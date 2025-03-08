@@ -24,35 +24,35 @@
   --border-color-light: #424242;
   --card-bg-color: #1e1e1e;
   --header-bg-color: #1a1a1a;
-  
+
   // 覆盖全局样式
   body {
     background-color: var(--bg-color-secondary);
     color: var(--text-color-primary);
   }
-  
+
   .card {
     background-color: var(--card-bg-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    
+
     &:hover {
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
     }
   }
-  
+
   .tag {
     background-color: #313131;
     color: #e0e0e0;
   }
-  
+
   // 滚动条
   ::-webkit-scrollbar-track {
     background: var(--bg-color-secondary);
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: var(--border-color-base);
-    
+
     &:hover {
       background: var(--border-color-light);
     }
@@ -85,4 +85,4 @@
   --primary-color: #7b1fa2;
   --primary-color-light: #ba68c8;
   --primary-color-dark: #4a148c;
-} 
+}

@@ -3,61 +3,56 @@
     <!-- 搜索表单 -->
     <div class="search-form">
       <el-form :model="searchForm" @submit.prevent="handleSearch">
-        <el-row :gutter="20">
-          <el-col :span="16" :xs="24">
-            <el-form-item>
-              <el-input
-                v-model="searchForm.keyword"
-                placeholder="搜索漫画名称或ID"
-                clearable
-                @keyup.enter="handleSearch"
-              >
-                <template #prefix>
-                  <el-icon><Search /></el-icon>
-                </template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :xs="24">
-            <el-form-item>
-              <el-button type="primary" @click="handleSearch" :loading="loading">搜索</el-button>
-              <el-button @click="handleReset">重置</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <div class="search-row">
+          <div class="search-label">搜索</div>
+          <div class="search-input-container">
+            <el-input
+              v-model="searchForm.keyword"
+              placeholder="搜索漫画名称或ID"
+              clearable
+              @keyup.enter="handleSearch"
+            >
+              <template #prefix>
+                <el-icon><Search /></el-icon>
+              </template>
+            </el-input>
+          </div>
+          <div class="search-buttons">
+            <el-button type="primary" @click="handleSearch" :loading="loading">搜索</el-button>
+            <el-button @click="handleReset">重置</el-button>
+          </div>
+        </div>
         
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-form-item label="标签">
-              <el-select
-                v-model="searchForm.tags"
-                multiple
-                collapse-tags
-                collapse-tags-tooltip
-                placeholder="选择标签"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="tag in availableTags"
-                  :key="tag"
-                  :label="tag"
-                  :value="tag"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <div class="filter-row">
+          <div class="filter-label">标签</div>
+          <div class="filter-content">
+            <el-select
+              v-model="searchForm.tags"
+              multiple
+              collapse-tags
+              collapse-tags-tooltip
+              placeholder="选择标签"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="tag in availableTags"
+                :key="tag"
+                :label="tag"
+                :value="tag"
+              />
+            </el-select>
+          </div>
+        </div>
         
-        <el-row :gutter="20">
-          <el-col :span="12" :xs="24">
-            <el-form-item label="排序方式">
-              <el-radio-group v-model="searchForm.sort">
-                <el-radio-button label="newest">最新更新</el-radio-button>
-                <el-radio-button label="popular">最受欢迎</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <div class="filter-row">
+          <div class="filter-label">排序</div>
+          <div class="filter-content">
+            <el-radio-group v-model="searchForm.sort">
+              <el-radio-button label="newest">最新更新</el-radio-button>
+              <el-radio-button label="popular">最受欢迎</el-radio-button>
+            </el-radio-group>
+          </div>
+        </div>
       </el-form>
     </div>
     
@@ -207,14 +202,94 @@ onMounted(() => {
 }
 
 .search-form {
-  background-color: var(--bg-color, white);
+  background-color: #1a1a1a;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  color: white;
+  
+  .search-row, .filter-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-label, .filter-label {
+    width: 60px;
+    color: white;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 12px;
+  }
+  
+  .search-input-container, .filter-content {
+    flex: 1;
+    margin-right: 20px;
+    
+    :deep(.el-input__inner) {
+      background-color: white;
+      border: none;
+      height: 40px;
+      border-radius: 4px;
+    }
+    
+    :deep(.el-select) {
+      width: 100%;
+      
+      .el-input__inner {
+        background-color: white;
+      }
+    }
+    
+    :deep(.el-radio-group) {
+      .el-radio-button__inner {
+        background-color: #2a2a2a;
+        border-color: #2a2a2a;
+        color: white;
+        
+        &:hover {
+          color: #409EFF;
+        }
+      }
+      
+      .el-radio-button__original-radio:checked + .el-radio-button__inner {
+        background-color: #409EFF;
+        border-color: #409EFF;
+        color: white;
+      }
+    }
+  }
+  
+  .search-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    white-space: nowrap;
+    
+    :deep(.el-button) {
+      height: 40px;
+      padding: 0 20px;
+      
+      &.el-button--primary {
+        background-color: #409EFF;
+      }
+      
+      &:not(.el-button--primary) {
+        background-color: white;
+        color: #333;
+      }
+    }
+  }
 }
 
 .search-results {
   min-height: 400px;
+  
+  :deep(.section-title) {
+    .title {
+      color: white;
+    }
+  }
 }
 </style> 

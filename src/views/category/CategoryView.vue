@@ -1,29 +1,18 @@
 <template>
   <div class="category-view">
     <h1 class="page-title">漫画分类</h1>
-    
+
     <!-- 分类标签 -->
     <div class="category-tags">
-      <el-tag 
-        v-for="tag in categoryTags" 
-        :key="tag.id" 
-        :class="{ active: activeTag === tag.id }"
-        @click="setActiveTag(tag.id)"
-      >
+      <el-tag v-for="tag in categoryTags" :key="tag.id" :class="{ active: activeTag === tag.id }"
+        @click="setActiveTag(tag.id)">
         {{ tag.name }}
       </el-tag>
     </div>
-    
+
     <!-- 漫画列表 -->
-    <comic-grid
-      :comics="filteredComics"
-      :loading="loading"
-      :pagination="true"
-      :total="total"
-      :default-page="currentPage"
-      :default-page-size="pageSize"
-      @page-change="handlePageChange"
-    />
+    <comic-grid :comics="filteredComics" :loading="loading" :pagination="true" :total="total"
+      :default-page="currentPage" :default-page-size="pageSize" @page-change="handlePageChange" />
   </div>
 </template>
 
@@ -120,7 +109,7 @@ onMounted(() => {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 30px;
-  
+
   .el-tag {
     cursor: pointer;
     padding: 8px 16px;
@@ -129,12 +118,12 @@ onMounted(() => {
     border-color: #2a2a2a;
     color: white;
     transition: all 0.3s;
-    
+
     &:hover {
       background-color: #3a3a3a;
       border-color: #3a3a3a;
     }
-    
+
     &.active {
       background-color: #fb7299;
       border-color: #fb7299;
@@ -142,4 +131,4 @@ onMounted(() => {
     }
   }
 }
-</style> 
+</style>

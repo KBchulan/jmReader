@@ -4,14 +4,14 @@
       <div class="page-header">
         <h1>常见问题</h1>
       </div>
-      
+
       <div class="faq-content">
         <el-collapse accordion>
           <el-collapse-item v-for="(item, index) in faqItems" :key="index" :title="item.question">
             <div class="faq-answer">{{ item.answer }}</div>
           </el-collapse-item>
         </el-collapse>
-        
+
         <div class="contact-section">
           <h2>还有其他问题？</h2>
           <p>如果您有其他问题，欢迎随时与我们联系。</p>
@@ -80,7 +80,7 @@ const faqItems = ref([
 .page-header {
   margin-bottom: 40px;
   text-align: center;
-  
+
   h1 {
     font-size: 32px;
     color: var(--text-color-primary, #303133);
@@ -88,7 +88,7 @@ const faqItems = ref([
     font-weight: 600;
     position: relative;
     display: inline-block;
-    
+
     &::after {
       content: '';
       position: absolute;
@@ -105,20 +105,20 @@ const faqItems = ref([
 .faq-content {
   max-width: 800px;
   margin: 0 auto;
-  
+
   :deep(.el-collapse) {
     border: none;
-    
+
     .el-collapse-item {
       margin-bottom: 16px;
       border: 1px solid var(--border-color-light, #ebeef5);
       border-radius: 8px;
       overflow: hidden;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
-      
+
       .el-collapse-item__header {
         font-size: 18px;
         font-weight: 600;
@@ -126,18 +126,18 @@ const faqItems = ref([
         padding: 16px 20px;
         background-color: var(--card-bg-color, white);
         border-bottom: none;
-        
+
         &.is-active {
           color: var(--primary-color, #fb7299);
         }
       }
-      
+
       .el-collapse-item__content {
         padding: 0 20px 20px;
       }
     }
   }
-  
+
   .faq-answer {
     font-size: 16px;
     line-height: 1.8;
@@ -152,20 +152,20 @@ const faqItems = ref([
   background-color: var(--card-bg-color, white);
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  
+
   h2 {
     font-size: 24px;
     color: var(--text-color-primary, #303133);
     margin: 0 0 16px;
     font-weight: 600;
   }
-  
+
   p {
     font-size: 16px;
     color: var(--text-color-regular, #606266);
     margin: 0 0 20px;
   }
-  
+
   .contact-link {
     text-decoration: none;
   }
@@ -175,15 +175,15 @@ const faqItems = ref([
   .faq-view {
     padding: 30px 0;
   }
-  
+
   .page-header {
     margin-bottom: 30px;
-    
+
     h1 {
       font-size: 28px;
     }
   }
-  
+
   .faq-content {
     :deep(.el-collapse) {
       .el-collapse-item {
@@ -191,31 +191,31 @@ const faqItems = ref([
           font-size: 16px;
           padding: 14px 16px;
         }
-        
+
         .el-collapse-item__content {
           padding: 0 16px 16px;
         }
       }
     }
-    
+
     .faq-answer {
       font-size: 15px;
     }
   }
-  
+
   .contact-section {
     margin-top: 30px;
     padding: 24px;
-    
+
     h2 {
       font-size: 22px;
       margin-bottom: 12px;
     }
-    
+
     p {
       font-size: 15px;
       margin-bottom: 16px;
     }
   }
 }
-</style> 
+</style>

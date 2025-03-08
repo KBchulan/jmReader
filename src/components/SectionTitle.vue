@@ -34,7 +34,7 @@ defineProps<{
   margin-bottom: 25px;
   padding-bottom: 10px;
   border-bottom: 1px solid #3a3a3a;
-  
+
   .title-wrapper {
     display: flex;
     align-items: center;

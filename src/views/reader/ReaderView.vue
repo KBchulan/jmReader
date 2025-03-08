@@ -8,7 +8,7 @@
             <el-button @click="goBack" icon="Back" plain>返回</el-button>
             <h2 class="chapter-title" v-if="currentChapter">{{ currentChapter.title }}</h2>
           </div>
-          
+
           <div class="right-controls">
             <el-button-group>
               <el-button @click="toggleFullscreen" :icon="isFullscreen ? 'FullScreen' : 'FullScreen'" plain>
@@ -20,14 +20,9 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 阅读设置抽屉 -->
-    <el-drawer
-      v-model="showSettings"
-      title="阅读设置"
-      direction="rtl"
-      size="300px"
-    >
+    <el-drawer v-model="showSettings" title="阅读设置" direction="rtl" size="300px">
       <div class="settings-content">
         <div class="setting-item">
           <span class="setting-label">阅读模式</span>
@@ -36,7 +31,7 @@
             <el-radio-button label="horizontal">水平翻页</el-radio-button>
           </el-radio-group>
         </div>
-        
+
         <div class="setting-item">
           <span class="setting-label">背景颜色</span>
           <el-radio-group v-model="backgroundColor" size="small">
@@ -45,19 +40,19 @@
             <el-radio-button label="sepia">护眼</el-radio-button>
           </el-radio-group>
         </div>
-        
+
         <div class="setting-item">
           <span class="setting-label">图片宽度</span>
           <el-slider v-model="imageWidth" :min="50" :max="100" :step="5" :format-tooltip="formatTooltip" />
         </div>
       </div>
     </el-drawer>
-    
+
     <!-- 加载中 -->
     <div v-if="loading" class="loading-container">
       <el-skeleton :rows="5" animated />
     </div>
-    
+
     <!-- 阅读内容 -->
     <div v-else-if="pages.length > 0" class="reader-content" :class="[readingMode, backgroundColor]">
       <div class="pages-container" :style="{ maxWidth: `${imageWidth}%` }">
@@ -67,24 +62,18 @@
             <img :src="page.url" :alt="`Page ${page.order}`" loading="lazy" />
           </div>
         </template>
-        
+
         <!-- 水平翻页模式 -->
         <template v-else>
-          <el-carousel
-            ref="carousel"
-            :autoplay="false"
-            :initial-index="currentPageIndex"
-            indicator-position="none"
-            height="calc(100vh - 120px)"
-            @change="handlePageChange"
-          >
+          <el-carousel ref="carousel" :autoplay="false" :initial-index="currentPageIndex" indicator-position="none"
+            height="calc(100vh - 120px)" @change="handlePageChange">
             <el-carousel-item v-for="page in pages" :key="page.id">
               <div class="page-item horizontal">
                 <img :src="page.url" :alt="`Page ${page.order}`" />
               </div>
             </el-carousel-item>
           </el-carousel>
-          
+
           <div class="page-navigation">
             <el-button @click="prevPage" :disabled="currentPageIndex === 0" icon="ArrowLeft" circle />
             <span class="page-indicator">{{ currentPageIndex + 1 }} / {{ pages.length }}</span>
@@ -93,26 +82,22 @@
         </template>
       </div>
     </div>
-    
+
     <!-- 错误提示 -->
     <div v-else class="error-container">
       <el-empty description="无法加载漫画内容" />
       <el-button type="primary" @click="goBack">返回</el-button>
     </div>
-    
+
     <!-- 章节导航 -->
     <div class="chapter-navigation" v-if="currentChapter && comic">
       <div class="container">
         <div class="navigation-content">
-          <el-button
-            v-if="prevChapter"
-            @click="navigateToChapter(prevChapter)"
-            icon="ArrowLeft"
-          >
+          <el-button v-if="prevChapter" @click="navigateToChapter(prevChapter)" icon="ArrowLeft">
             上一章: {{ prevChapter.title }}
           </el-button>
           <span v-else></span>
-          
+
           <el-dropdown @command="handleChapterSelect">
             <el-button>
               章节列表
@@ -120,23 +105,15 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="chapter in comic.chapters"
-                  :key="chapter.id"
-                  :command="chapter.id"
-                  :class="{ 'is-active': currentChapter.id === chapter.id }"
-                >
+                <el-dropdown-item v-for="chapter in comic.chapters" :key="chapter.id" :command="chapter.id"
+                  :class="{ 'is-active': currentChapter.id === chapter.id }">
                   {{ chapter.title }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          
-          <el-button
-            v-if="nextChapter"
-            @click="navigateToChapter(nextChapter)"
-            icon-position="right"
-          >
+
+          <el-button v-if="nextChapter" @click="navigateToChapter(nextChapter)" icon-position="right">
             下一章: {{ nextChapter.title }}
             <el-icon class="el-icon--right"><arrow-right /></el-icon>
           </el-button>
@@ -184,7 +161,7 @@ const chapterId = computed(() => route.params.id)
 // 上一章和下一章
 const prevChapter = computed(() => {
   if (!comic.value || !comic.value.chapters || !currentChapter.value) return null
-  
+
   const currentIndex = comic.value.chapters.findIndex(c => c.id === currentChapter.value?.id)
   if (currentIndex > 0) {
     return comic.value.chapters[currentIndex - 1]
@@ -194,7 +171,7 @@ const prevChapter = computed(() => {
 
 const nextChapter = computed(() => {
   if (!comic.value || !comic.value.chapters || !currentChapter.value) return null
-  
+
   const currentIndex = comic.value.chapters.findIndex(c => c.id === currentChapter.value?.id)
   if (currentIndex < comic.value.chapters.length - 1) {
     return comic.value.chapters[currentIndex + 1]
@@ -273,7 +250,7 @@ function resetControlsTimeout() {
   if (controlsTimeout.value) {
     clearTimeout(controlsTimeout.value)
   }
-  
+
   showControls.value = true
   controlsTimeout.value = window.setTimeout(() => {
     if (!showSettings.value) {
@@ -293,24 +270,24 @@ onMounted(() => {
     const id = Array.isArray(chapterId.value) ? chapterId.value[0] : chapterId.value
     loadChapterPages(id)
   }
-  
+
   // 添加鼠标移动监听
   document.addEventListener('mousemove', handleMouseMove)
-  
+
   // 初始化控制栏超时
   resetControlsTimeout()
-  
+
   // 从本地存储加载阅读设置
   const savedReadingMode = localStorage.getItem('comic-reading-mode')
   if (savedReadingMode === 'vertical' || savedReadingMode === 'horizontal') {
     readingMode.value = savedReadingMode
   }
-  
+
   const savedBackgroundColor = localStorage.getItem('comic-background-color')
   if (savedBackgroundColor === 'white' || savedBackgroundColor === 'black' || savedBackgroundColor === 'sepia') {
     backgroundColor.value = savedBackgroundColor
   }
-  
+
   const savedImageWidth = localStorage.getItem('comic-image-width')
   if (savedImageWidth) {
     imageWidth.value = parseInt(savedImageWidth, 10)
@@ -348,7 +325,7 @@ watch(showSettings, (newValue) => {
 .reader-view {
   position: relative;
   min-height: calc(100vh - 60px);
-  
+
   &.fullscreen {
     position: fixed;
     top: 0;
@@ -357,7 +334,7 @@ watch(showSettings, (newValue) => {
     bottom: 0;
     z-index: 9999;
     background-color: var(--bg-color, white);
-    
+
     .reader-header {
       position: fixed;
       top: 0;
@@ -365,7 +342,7 @@ watch(showSettings, (newValue) => {
       right: 0;
       z-index: 10;
     }
-    
+
     .chapter-navigation {
       position: fixed;
       bottom: 0;
@@ -373,7 +350,7 @@ watch(showSettings, (newValue) => {
       right: 0;
       z-index: 10;
     }
-    
+
     .reader-content {
       height: 100vh;
       padding: 60px 0;
@@ -421,22 +398,22 @@ watch(showSettings, (newValue) => {
   justify-content: center;
   padding: 20px 0;
   transition: background-color 0.3s;
-  
+
   &.white {
     background-color: #ffffff;
     color: #333333;
   }
-  
+
   &.black {
     background-color: #121212;
     color: #ffffff;
   }
-  
+
   &.sepia {
     background-color: #f8f1e3;
     color: #5f4b32;
   }
-  
+
   &.vertical {
     .pages-container {
       display: flex;
@@ -444,10 +421,10 @@ watch(showSettings, (newValue) => {
       gap: 10px;
       margin: 0 auto;
     }
-    
+
     .page-item {
       text-align: center;
-      
+
       img {
         max-width: 100%;
         height: auto;
@@ -455,21 +432,21 @@ watch(showSettings, (newValue) => {
       }
     }
   }
-  
+
   &.horizontal {
     .page-item {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
-      
+
       img {
         max-height: 100%;
         max-width: 100%;
         object-fit: contain;
       }
     }
-    
+
     .page-navigation {
       display: flex;
       justify-content: center;
@@ -477,7 +454,7 @@ watch(showSettings, (newValue) => {
       gap: 20px;
       margin-top: 20px;
     }
-    
+
     .page-indicator {
       font-size: 14px;
       color: var(--text-color-regular, #606266);
@@ -503,7 +480,7 @@ watch(showSettings, (newValue) => {
 
 .setting-item {
   margin-bottom: 24px;
-  
+
   .setting-label {
     display: block;
     margin-bottom: 10px;
@@ -515,4 +492,4 @@ watch(showSettings, (newValue) => {
 :deep(.el-dropdown-menu__item.is-active) {
   color: var(--primary-color, #fb7299);
 }
-</style> 
+</style>

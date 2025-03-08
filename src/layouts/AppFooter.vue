@@ -4,7 +4,8 @@
       <div class="footer-content">
         <div class="footer-left">
           <div class="footer-logo">
-            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
             </svg>
@@ -53,17 +54,13 @@
         <p>本站漫画均来自互联网，如有侵权请联系我们删除</p>
       </div>
     </div>
-    
+
     <!-- 社交媒体弹窗 -->
-    <el-dialog
-      v-model="socialModalVisible"
-      :title="socialModalTitle"
-      width="300px"
-      align-center
-    >
+    <el-dialog v-model="socialModalVisible" :title="socialModalTitle" width="300px" align-center>
       <div class="social-modal-content">
         <div class="qrcode-placeholder">
-          <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <path d="M8 7v10"></path>
             <path d="M12 7v10"></path>
@@ -92,7 +89,7 @@ const socialModalTitle = ref('')
 // 显示社交媒体弹窗
 const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   socialModalVisible.value = true
-  
+
   switch (type) {
     case 'weibo':
       socialModalTitle.value = '关注我们的微博'
@@ -119,7 +116,7 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 30px;
@@ -128,19 +125,19 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
 
 .footer-left {
   max-width: 300px;
-  
+
   .footer-logo {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
-    
+
     .logo-icon {
       width: 24px;
       height: 24px;
       stroke: var(--primary-color, #fb7299);
     }
-    
+
     h3 {
       font-size: 1.2rem;
       color: var(--primary-color, #fb7299);
@@ -148,24 +145,24 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
       font-weight: 600;
     }
   }
-  
+
   .footer-desc {
     margin: 0 0 12px;
     color: var(--text-color-regular, #606266);
     font-size: 0.9rem;
     line-height: 1.5;
   }
-  
+
   .footer-copyright {
     margin: 0;
     color: var(--text-color-secondary, #909399);
     font-size: 0.85rem;
   }
-  
+
   @media (max-width: 768px) {
     max-width: 100%;
     text-align: center;
-    
+
     .footer-logo {
       justify-content: center;
     }
@@ -175,13 +172,13 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
 .footer-right {
   display: flex;
   gap: 40px;
-  
+
   @media (max-width: 768px) {
     justify-content: space-around;
     flex-wrap: wrap;
     gap: 20px;
   }
-  
+
   @media (max-width: 576px) {
     flex-direction: column;
     align-items: center;
@@ -202,12 +199,12 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
+
   a {
     color: var(--text-color-regular, #606266);
     font-size: 0.9rem;
     transition: color 0.2s;
-    
+
     &:hover {
       color: var(--primary-color, #fb7299);
     }
@@ -218,7 +215,7 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
+
   .social-link {
     display: flex;
     align-items: center;
@@ -226,26 +223,26 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
     color: var(--text-color-regular, #606266);
     font-size: 0.9rem;
     transition: color 0.2s;
-    
+
     &:hover {
       color: var(--primary-color, #fb7299);
     }
-    
+
     .social-icon {
       width: 16px;
       height: 16px;
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      
+
       &.weibo {
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgOWMtMS4xIDAtMiAuOS0yIDJhMiAyIDAgMCAwIDIgMmMyLjIgMCA0LTEuOCA0LTRzLTEuOC00LTQtNGMtMy4zIDAtNiAyLjctNiA2djJjMCA0LjQtMy42IDgtOCA4cy04LTMuNi04LTggMy42LTggOC04YzEuMSAwIDIuMi4yIDMuMi42Ii8+PC9zdmc+');
       }
-      
+
       &.wechat {
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTcgMTFhOCA4IDAgMSAwLTkuNjQgNy44MUw1IDIybDMuMzMtMi4zQTggOCAwIDAgMCAxNyAxMXoiLz48L3N2Zz4=');
       }
-      
+
       &.qq {
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTggMTBhOCA4IDAgMSAwLTE2IDBjMCAzLjEgMS43NiA1LjggNC4zMyA3LjE2QzUuNTYgMTguNDUgNSAyMCA1IDIyaDJjMC0xLjM4IDEuMzQtMi41IDMtMi41czMgMS4xMiAzIDIuNWgyYzAtMi0uNTYtMy41NS0xLjMzLTQuODRBNy45OCA3Ljk4IDAgMCAwIDE4IDEweiIvPjwvc3ZnPg==');
       }
@@ -257,7 +254,7 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   text-align: center;
   padding-top: 20px;
   border-top: 1px solid var(--border-color-light, #ebeef5);
-  
+
   p {
     margin: 0;
     color: var(--text-color-secondary, #909399);
@@ -269,7 +266,7 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   .qrcode-placeholder {
     width: 150px;
     height: 150px;
@@ -279,16 +276,16 @@ const showSocialModal = (type: 'weibo' | 'wechat' | 'qq') => {
     align-items: center;
     background-color: #f5f7fa;
     border-radius: 4px;
-    
+
     svg {
       color: #dcdfe6;
     }
   }
-  
+
   p {
     margin: 0;
     color: var(--text-color-regular, #606266);
     font-size: 14px;
   }
 }
-</style> 
+</style>

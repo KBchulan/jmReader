@@ -35,4 +35,4 @@ import BackToTop from '@/components/BackToTop.vue'
   padding: 20px 0;
   margin-top: 0;
 }
-</style> 
+</style>

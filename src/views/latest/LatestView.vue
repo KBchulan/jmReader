@@ -1,7 +1,7 @@
 <template>
   <div class="latest-view">
     <h1 class="page-title">最新更新</h1>
-    
+
     <!-- 时间筛选 -->
     <div class="time-filter">
       <el-radio-group v-model="timeFilter" @change="handleTimeFilterChange">
@@ -11,17 +11,10 @@
         <el-radio-button label="month">本月</el-radio-button>
       </el-radio-group>
     </div>
-    
+
     <!-- 漫画列表 -->
-    <comic-grid
-      :comics="filteredComics"
-      :loading="loading"
-      :pagination="true"
-      :total="total"
-      :default-page="currentPage"
-      :default-page-size="pageSize"
-      @page-change="handlePageChange"
-    />
+    <comic-grid :comics="filteredComics" :loading="loading" :pagination="true" :total="total"
+      :default-page="currentPage" :default-page-size="pageSize" @page-change="handlePageChange" />
   </div>
 </template>
 
@@ -46,10 +39,10 @@ const filteredComics = computed(() => {
   if (timeFilter.value === 'all') {
     return comics.value
   }
-  
+
   const now = new Date()
   let startDate: Date
-  
+
   switch (timeFilter.value) {
     case 'today':
       startDate = new Date(now.setHours(0, 0, 0, 0))
@@ -64,7 +57,7 @@ const filteredComics = computed(() => {
     default:
       return comics.value
   }
-  
+
   return comics.value.filter(comic => {
     const updateDate = new Date(comic.updateTime)
     return updateDate >= startDate
@@ -89,7 +82,7 @@ const fetchLatestComics = async () => {
   try {
     // 获取更多的最新漫画，以便筛选
     await comicStore.fetchLatestComics(50)
-    
+
     // 根据时间筛选后的总数
     total.value = filteredComics.value.length
   } catch (error) {
@@ -119,21 +112,21 @@ onMounted(() => {
 
 .time-filter {
   margin-bottom: 30px;
-  
+
   :deep(.el-radio-button__inner) {
     background-color: #2a2a2a;
     border-color: #3a3a3a;
     color: white;
-    
+
     &:hover {
       color: #fb7299;
     }
   }
-  
+
   :deep(.el-radio-button__original-radio:checked + .el-radio-button__inner) {
     background-color: #fb7299;
     border-color: #fb7299;
     box-shadow: -1px 0 0 0 #fb7299;
   }
 }
-</style> 
+</style>
