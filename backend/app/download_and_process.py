@@ -16,6 +16,9 @@ print(f"下载脚本中的BASE_URL: {BASE_URL}")
 print(f"所有环境变量: {dict(os.environ)}")
 print(f"当前工作目录: {Path.cwd().absolute()}")
 
+# 添加目标路径常量
+TARGET_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/mock')
+
 def get_static_url(path: str) -> str:
     """生成静态资源的完整URL"""
     # 确保path不以/开头
@@ -37,7 +40,7 @@ def download_and_process(comic_id):
         print(f"正在导入jmcomic模块...")
         try:
             import jmcomic
-            print(f"jmcomic模块导入成功，版本: {getattr(jmcomic, '__version__', '未知')}")
+            print(f"jmcomic模块导入成功, 版本: {getattr(jmcomic, '__version__', '未知')}")
         except ImportError as e:
             print(f"导入jmcomic模块失败: {e}")
             print("请确保已安装jmcomic模块: pip install jmcomic")
@@ -63,30 +66,11 @@ def download_and_process(comic_id):
         source_path = Path(newest_dir)
         print(f"找到下载目录: {source_path.absolute()}")
         
-        # 目标目录 - 使用backend/mock目录
         script_dir = Path(__file__).parent
         print(f"脚本目录: {script_dir.absolute()}")
         
-        # 尝试多种可能的路径
-        possible_paths = [
-            script_dir.parent.parent / "backend" / "mock",  # /path/to/project/backend/mock
-            script_dir.parent.parent / "mock",              # /path/to/project/mock
-            script_dir.parent / "mock",                     # /path/to/backend/mock
-            Path("../mock")                                 # 相对路径
-        ]
-        
-        target_dir = None
-        for path in possible_paths:
-            print(f"尝试目标路径: {path.absolute()}")
-            if path.exists() or path.parent.exists():
-                target_dir = path
-                print(f"找到有效的目标路径: {target_dir.absolute()}")
-                break
-        
-        if target_dir is None:
-            print("无法找到有效的目标路径，将使用默认路径")
-            target_dir = script_dir.parent / "mock"
-        
+        # 使用固定的目标目录
+        target_dir = TARGET_DIR
         print(f"最终目标目录: {target_dir.absolute()}")
         target_dir.mkdir(parents=True, exist_ok=True)
         
@@ -168,30 +152,8 @@ def update_comics_list(comic_id, comic_info, image_paths):
     try:
         print(f"开始更新漫画列表，漫画ID: {comic_id}")
         
-        # 漫画列表文件路径
-        script_dir = Path(__file__).parent
-        print(f"脚本目录: {script_dir.absolute()}")
-        
-        # 尝试多种可能的路径
-        possible_paths = [
-            script_dir.parent.parent / "backend" / "mock",  # /path/to/project/backend/mock
-            script_dir.parent.parent / "mock",              # /path/to/project/mock
-            script_dir.parent / "mock",                     # /path/to/backend/mock
-            Path("../mock")                                 # 相对路径
-        ]
-        
-        target_dir = None
-        for path in possible_paths:
-            print(f"尝试目标路径: {path.absolute()}")
-            if path.exists() or path.parent.exists():
-                target_dir = path
-                print(f"找到有效的目标路径: {target_dir.absolute()}")
-                break
-        
-        if target_dir is None:
-            print("无法找到有效的目标路径，将使用默认路径")
-            target_dir = script_dir.parent / "mock"
-        
+        # 使用固定的目标目录
+        target_dir = TARGET_DIR
         print(f"最终目标目录: {target_dir.absolute()}")
         target_dir.mkdir(parents=True, exist_ok=True)
         
@@ -283,4 +245,4 @@ def main():
     download_and_process(comic_id)
 
 if __name__ == "__main__":
-    main() 
+    main()

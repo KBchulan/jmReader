@@ -16,6 +16,9 @@ settings = get_settings()
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000")
 STATIC_PATH = "/static"  # 静态资源路径前缀
 
+# 定义目标路径常量
+TARGET_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/mock')
+
 app = FastAPI(title="漫画阅读API")
 
 # 配置CORS
@@ -27,11 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 挂载静态文件目录 - 使用backend/mock目录
-static_dir = Path(__file__).parent.parent.parent / "backend" / "mock"
-if not static_dir.exists():
-    # 如果backend/mock不存在，尝试使用../mock
-    static_dir = Path(__file__).parent.parent / "mock"
+# 挂载静态文件目录 - 使用目标路径常量
+static_dir = TARGET_DIR
 print(f"静态文件目录: {static_dir.absolute()}")
 static_dir.mkdir(parents=True, exist_ok=True)
 app.mount(STATIC_PATH, StaticFiles(directory=str(static_dir)), name="static")
@@ -191,7 +191,7 @@ def health_check():
 def get_comics(page: int = 1, pageSize: int = 20):
     """获取漫画列表"""
     try:
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             return PaginatedResult(items=[], total=0, page=page, pageSize=pageSize, hasMore=False)
         
@@ -224,7 +224,7 @@ def get_comics(page: int = 1, pageSize: int = 20):
 def search_comics(keyword: str = "", page: int = 1, pageSize: int = 20):
     """搜索漫画"""
     try:
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             return PaginatedResult(items=[], total=0, page=page, pageSize=pageSize, hasMore=False)
         
@@ -268,7 +268,7 @@ def search_comics(keyword: str = "", page: int = 1, pageSize: int = 20):
 def get_latest_comics(limit: int = 10):
     """获取最新更新的漫画"""
     try:
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             return []
         
@@ -298,7 +298,7 @@ def get_latest_comics(limit: int = 10):
 def get_recommended_comics(limit: int = 6):
     """获取推荐漫画"""
     try:
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             return []
         
@@ -327,7 +327,7 @@ def get_comic_detail(comic_id: str):
     """获取漫画详情"""
     try:
         # 读取漫画列表
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             raise HTTPException(status_code=404, detail="漫画列表不存在")
         
@@ -344,7 +344,7 @@ def get_comic_detail(comic_id: str):
             comic["cover"] = get_static_url(comic["cover"])
         
         # 读取章节列表
-        chapters_file = static_dir / "chapters.json"
+        chapters_file = TARGET_DIR / "chapters.json"
         if chapters_file.exists():
             with open(chapters_file, "r", encoding="utf-8") as f:
                 all_chapters = json.load(f)
@@ -379,7 +379,7 @@ def get_chapter_pages(chapter_id: str):
         comic_id, chapter_order = parts
         
         # 读取章节信息
-        chapters_file = static_dir / "chapters.json"
+        chapters_file = TARGET_DIR / "chapters.json"
         if not chapters_file.exists():
             raise HTTPException(status_code=404, detail="章节列表不存在")
         
@@ -420,7 +420,7 @@ async def delete_comic(comic_id: str):
     """删除漫画"""
     try:
         # 读取漫画列表
-        comics_file = static_dir / "comics.json"
+        comics_file = TARGET_DIR / "comics.json"
         if not comics_file.exists():
             raise HTTPException(status_code=404, detail="漫画列表不存在")
         
@@ -435,7 +435,7 @@ async def delete_comic(comic_id: str):
             json.dump(comics, f, ensure_ascii=False, indent=2)
         
         # 读取章节列表
-        chapters_file = static_dir / "chapters.json"
+        chapters_file = TARGET_DIR / "chapters.json"
         if chapters_file.exists():
             with open(chapters_file, "r", encoding="utf-8") as f:
                 chapters = json.load(f)
@@ -448,7 +448,7 @@ async def delete_comic(comic_id: str):
                 json.dump(chapters, f, ensure_ascii=False, indent=2)
         
         # 删除漫画目录
-        comic_dir = static_dir / comic_id
+        comic_dir = TARGET_DIR / comic_id
         if comic_dir.exists():
             import shutil
             shutil.rmtree(comic_dir)
@@ -491,4 +491,4 @@ def get_static_url(path: str) -> str:
     # 确保path不以/开头
     if path.startswith('/'):
         path = path[1:]
-    return f"{BASE_URL}{STATIC_PATH}/{path}" 
+    return f"{BASE_URL}{STATIC_PATH}/{path}"
