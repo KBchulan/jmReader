@@ -17,7 +17,7 @@ app = FastAPI(title="漫画阅读API")
 # 配置CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允许所有来源
+    allow_origins=["*"],  # 允许所有来源，生产环境中应该限制为前端域名
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -131,6 +131,18 @@ def download_comic_task(comic_id: str):
         print(f"下载漫画 {comic_id} 时出错: {e}")
         import traceback
         traceback.print_exc()
+
+@app.get("/")
+async def root():
+    return {
+        "message": "漫画阅读API服务正在运行",
+        "api_docs": f"{BASE_URL}/docs",
+        "endpoints": {
+            "api_root": f"{BASE_URL}/api",
+            "static_files": f"{BASE_URL}/static",
+            "websocket": f"{BASE_URL}/ws"
+        }
+    }
 
 @api_router.get("/")
 def read_root():
