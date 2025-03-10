@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { Comic, Chapter, Page } from '@/types'
 import * as comicApi from '@/api/comic'
+import { onMessage, offMessage } from '@/utils/websocket'
 
 export const useComicStore = defineStore('comic', () => {
   // 状态
@@ -160,6 +161,34 @@ export const useComicStore = defineStore('comic', () => {
     currentPages.value = []
     error.value = null
   }
+
+  // 处理WebSocket消息
+  function handleComicAdded(data: any) {
+    console.log('收到漫画添加通知:', data)
+    // 刷新漫画列表
+    fetchComics()
+    fetchLatestComics()
+    fetchRecommendedComics()
+  }
+
+  function handleComicDeleted(data: any) {
+    console.log('收到漫画删除通知:', data)
+    // 刷新漫画列表
+    fetchComics()
+    fetchLatestComics()
+    fetchRecommendedComics()
+    
+    // 如果当前正在查看的漫画被删除，重置状态
+    if (currentComic.value && currentComic.value.id.toString() === data.comic_id) {
+      currentComic.value = null
+      currentChapter.value = null
+      currentPages.value = []
+    }
+  }
+
+  // 注册WebSocket消息处理
+  onMessage('comic_added', handleComicAdded)
+  onMessage('comic_deleted', handleComicDeleted)
 
   return {
     // 状态

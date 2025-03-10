@@ -9,6 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import App from './App.vue'
 import router from './router'
+import { initWebSocket } from './utils/websocket'
 
 const app = createApp(App)
 
@@ -20,5 +21,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+
+// 初始化WebSocket连接
+initWebSocket()
 
 app.mount('#app')
