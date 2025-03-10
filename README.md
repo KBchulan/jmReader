@@ -88,12 +88,13 @@ src/
 
 ## 配置
 
-项目使用环境变量进行配置，可以在 `.env` 文件中设置：
-
+如果您需要自己部署，请更改.env.development
 ```
-VITE_APP_TITLE=漫画阅读
-VITE_API_BASE_URL=http://localhost:3000
-VITE_COMICS_PER_PAGE=24
+VITE_API_BASE_URL=your_api_base_url
+```
+以及backend/app/main.py
+```
+BASE_URL = os.environ.get("BASE_URL", "your_api_base_url")
 ```
 
 ## 贡献
