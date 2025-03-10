@@ -157,7 +157,11 @@ const downloadComic = async () => {
   downloadSuccess.value = true
 
   try {
-    const response = await axios.get(`http://0.0.0.0:3000/download/${comicId.value}`)
+    // 使用环境变量中的API基础URL，而不是硬编码的地址
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    // 从apiBaseUrl中提取基础URL（去掉/api部分）
+    const baseUrl = apiBaseUrl.replace(/\/api$/, '')
+    const response = await axios.get(`${baseUrl}/download/${comicId.value}`)
     downloadMessage.value = response.data.message
     downloadSuccess.value = true
     ElMessage.success(response.data.message)

@@ -11,6 +11,11 @@ from datetime import datetime
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000")
 STATIC_PATH = "/static"  # 静态资源路径前缀
 
+# 打印环境变量，用于调试
+print(f"下载脚本中的BASE_URL: {BASE_URL}")
+print(f"所有环境变量: {dict(os.environ)}")
+print(f"当前工作目录: {Path.cwd().absolute()}")
+
 def get_static_url(path: str) -> str:
     """生成静态资源的完整URL"""
     # 确保path不以/开头

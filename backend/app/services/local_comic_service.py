@@ -2,6 +2,7 @@ import logging
 import json
 import subprocess
 import sys
+import os
 from typing import List, Optional
 from pathlib import Path
 
@@ -26,18 +27,26 @@ class LocalComicService:
                 logger.info(f"漫画 {comic_id} 已存在，跳过下载")
                 return await self.get_comic_detail(comic_id)
             
-            # 检查下载脚本是否存在
-            script_path = Path("./download_and_process.py")
+            # 使用绝对路径获取下载脚本
+            script_path = Path(__file__).parent.parent / "download_and_process.py"
             if not script_path.exists():
                 logger.error(f"下载脚本 {script_path} 不存在")
                 return None
             
             # 运行下载脚本
             logger.info(f"开始下载漫画 {comic_id}")
+            
+            # 准备环境变量
+            env = os.environ.copy()
+            # 确保BASE_URL被正确传递
+            base_url = os.environ.get("BASE_URL", "http://localhost:3000")
+            env["BASE_URL"] = base_url
+            
             result = subprocess.run(
                 [sys.executable, str(script_path), comic_id],
                 capture_output=True,
-                text=True
+                text=True,
+                env=env  # 传递环境变量
             )
             
             if result.returncode != 0:

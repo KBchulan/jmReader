@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 import os
 from pathlib import Path
-from typing import List, Set, Optional
+from typing import List, Optional
 
 class Settings(BaseSettings):
     # 基本配置
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     port: int = 3000
     
     # 跨域配置
-    cors_origins: List[str] = ["http://0.0.0.0:5173"]
+    cors_origins: List[str] = ["http://0.0.0.0:5173", "http://localhost:5173", "*"]
     
     # 缓存配置
     cache_enabled: bool = True

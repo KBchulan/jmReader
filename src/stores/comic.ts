@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { Comic, Chapter, Page } from '@/types'
 import * as comicApi from '@/api/comic'
-import { onMessage, offMessage } from '@/utils/websocket'
+import { onMessage } from '@/utils/websocket'
 
 export const useComicStore = defineStore('comic', () => {
   // 状态

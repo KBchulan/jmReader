@@ -7,6 +7,10 @@ import json
 import os
 from typing import List, Optional, Dict
 from pydantic import BaseModel
+from app.config.settings import get_settings
+
+# 获取配置
+settings = get_settings()
 
 # 配置项
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000")
@@ -17,7 +21,7 @@ app = FastAPI(title="漫画阅读API")
 # 配置CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允许所有来源，生产环境中应该限制为前端域名
+    allow_origins=settings.cors_origins,  # 使用settings中的配置
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -111,12 +115,19 @@ def download_comic_task(comic_id: str):
             print(f"错误: 下载脚本不存在: {download_script.absolute()}")
             return
         
+        # 准备环境变量
+        env = os.environ.copy()
+        # 确保BASE_URL被正确传递
+        env["BASE_URL"] = BASE_URL
+        print(f"传递给下载脚本的BASE_URL: {BASE_URL}")
+        
         # 执行下载脚本
         result = subprocess.run(
             ["python3", str(download_script.absolute()), comic_id], 
             check=False,
             capture_output=True,
-            text=True
+            text=True,
+            env=env  # 传递环境变量
         )
         
         if result.returncode != 0:
@@ -140,7 +151,8 @@ async def root():
         "endpoints": {
             "api_root": f"{BASE_URL}/api",
             "static_files": f"{BASE_URL}/static",
-            "websocket": f"{BASE_URL}/ws"
+            "websocket": f"{BASE_URL}/ws",
+            "download": f"{BASE_URL}/download"
         }
     }
 

@@ -23,7 +23,7 @@ export function initWebSocket() {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
   const baseUrl = import.meta.env.VITE_API_BASE_URL as string || ''
   let host = window.location.host
-  
+
   // 从baseUrl中提取主机名
   if (baseUrl) {
     try {
@@ -33,10 +33,10 @@ export function initWebSocket() {
       console.error('解析API基础URL时出错:', e)
     }
   }
-  
+
   const wsUrl = `${protocol}//${host}/ws`
   console.log('WebSocket连接URL:', wsUrl)
-  
+
   try {
     ws = new WebSocket(wsUrl)
 
@@ -51,7 +51,7 @@ export function initWebSocket() {
       try {
         const data = JSON.parse(event.data)
         console.log('收到WebSocket消息:', data)
-        
+
         // 如果有action字段，触发对应的处理函数
         if (data.action && messageHandlers[data.action]) {
           messageHandlers[data.action].forEach(handler => handler(data))
@@ -65,7 +65,7 @@ export function initWebSocket() {
     ws.onclose = () => {
       console.log('WebSocket连接已关闭')
       wsConnected.value = false
-      
+
       // 尝试重新连接
       setTimeout(() => {
         initWebSocket()
