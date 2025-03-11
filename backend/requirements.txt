@@ -2,6 +2,6 @@ fastapi==0.109.0
 pydantic==2.5.3
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
-jmcomic>=2.5.30 
+jmcomic>=2.5.30
 uvicorn==0.25.0
 websockets==15.0.1

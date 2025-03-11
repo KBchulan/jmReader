@@ -178,7 +178,7 @@ async def download_comic(comic_id: str, background_tasks: BackgroundTasks):
 
 @app.get("/download/{comic_id}")
 async def root_download_comic(comic_id: str, background_tasks: BackgroundTasks):
-    """根路径下的下载漫画API，重定向到/api/download/{comic_id}"""
+    """根路径下的下载漫画API, 重定向到/api/download/{comic_id}"""
     return await download_comic(comic_id, background_tasks)
 
 @api_router.get("/health")
