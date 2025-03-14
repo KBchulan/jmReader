@@ -110,7 +110,7 @@ server {
 
     # 后端API
     location /api {
-        proxy_pass http://localhost:3000/api;
+        proxy_pass http://120.27.201.149:3000/api;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -120,7 +120,7 @@ server {
 
     # WebSocket
     location /ws {
-        proxy_pass http://localhost:3000/ws;
+        proxy_pass http://120.27.201.149:3000/ws;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "Upgrade";
@@ -129,7 +129,7 @@ server {
 
     # 静态资源
     location /static {
-        proxy_pass http://localhost:3000/static;
+        proxy_pass http://120.27.201.149:3000/static;
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
@@ -137,7 +137,7 @@ server {
 
     # 健康检查
     location /health {
-        proxy_pass http://localhost:3000/api/health;
+        proxy_pass http://120.27.201.149:3000/api/health;
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
@@ -145,7 +145,7 @@ server {
 
     # 下载API
     location /download {
-        proxy_pass http://localhost:3000/download;
+        proxy_pass http://120.27.201.149:3000/download;
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
