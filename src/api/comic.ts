@@ -77,4 +77,4 @@ export async function getRecommendedComics(limit = 6): Promise<Comic[]> {
     console.error('获取推荐漫画失败', error)
     return []
   }
-} 
+}
