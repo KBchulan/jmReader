@@ -8,4 +8,4 @@ class ApiResponse(BaseModel, Generic[T]):
     code: int = 200
     data: Optional[T] = None
     message: str = "操作成功"
-    success: bool = True 
+    success: bool = True

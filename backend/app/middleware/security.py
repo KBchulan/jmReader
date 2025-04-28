@@ -10,8 +10,7 @@ async def security_middleware(request: Request, call_next):
     """安全中间件"""
     if not settings.security_enabled:
         return await call_next(request)
-    
-    # 检查请求大小
+
     content_length = request.headers.get("content-length")
     if content_length and int(content_length) > settings.max_request_size:
         logger.warning(f"请求大小超过限制: {content_length} bytes")
@@ -22,8 +21,7 @@ async def security_middleware(request: Request, call_next):
                 "success": False
             }
         )
-    
-    # 检查文件上传类型（如果有）
+
     if request.headers.get("content-type", "").startswith("multipart/form-data"):
         form = await request.form()
         for field in form:
@@ -36,12 +34,11 @@ async def security_middleware(request: Request, call_next):
                         "success": False
                     }
                 )
-    
-    # 添加安全响应头
+
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    
-    return response 
+
+    return response

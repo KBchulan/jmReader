@@ -30,7 +30,7 @@ class Comic(BaseModel):
     update_time: datetime = Field(default_factory=datetime.now)
     status: str = "ongoing"  # ongoing, completed
     chapters: Optional[List[Chapter]] = None
-    
+
 class ComicInDB(Comic):
     """存储在数据库中的漫画模型"""
     created_at: datetime = Field(default_factory=datetime.now)
@@ -42,4 +42,4 @@ class PaginatedResult(BaseModel):
     total: int
     page: int
     page_size: int
-    has_more: bool 
+    has_more: bool

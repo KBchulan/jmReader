@@ -12,4 +12,4 @@ async def get_chapter_pages(chapter_id: str = Path(...)):
     pages = await local_comic_service.get_chapter_pages(chapter_id)
     if not pages:
         raise HTTPException(status_code=404, detail="章节不存在或没有页面")
-    return pages 
+    return pages

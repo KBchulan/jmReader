@@ -21,6 +21,8 @@ export default defineConfig({
   },
   server:{
     host: '0.0.0.0',
+    allowedHosts: ['jmreader.chulan.xin'],
+    cors: true
   },
   define:{
     __VUE_PROD_DEVTOOLS__: false

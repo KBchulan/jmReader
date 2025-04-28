@@ -46,5 +46,13 @@
     "order": 1,
     "updateTime": "2025-03-10",
     "pageCount": 36
+  },
+  {
+    "id": "330028-1",
+    "comicId": "330028",
+    "title": "第1话",
+    "order": 1,
+    "updateTime": "2025-04-28",
+    "pageCount": 26
   }
 ]

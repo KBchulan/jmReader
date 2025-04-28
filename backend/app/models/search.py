@@ -6,5 +6,5 @@ class SearchParams(BaseModel):
     keyword: str
     page: int = 1
     page_size: int = 20
-    sort: Optional[str] = "newest"  # newest, popular
-    tags: Optional[List[str]] = None 
+    sort: Optional[str] = "newest"
+    tags: Optional[List[str]] = None

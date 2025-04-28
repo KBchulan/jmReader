@@ -16,4 +16,4 @@ async def search_comics(
 ):
     """搜索漫画"""
     result = await local_comic_service.search_comics(keyword, page, page_size, sort, tags)
-    return result 
+    return result

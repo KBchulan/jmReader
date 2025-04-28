@@ -37,6 +37,5 @@ async def get_latest_comics(limit: int = Query(10, ge=1, le=50)):
 @router.get("/comics/recommended", response_model=List[Comic])
 async def get_recommended_comics(limit: int = Query(6, ge=1, le=20)):
     """获取推荐漫画"""
-    # 这里简单地返回最新漫画作为推荐
     result = await local_comic_service.get_comics(1, limit)
-    return result.items 
+    return result.items
